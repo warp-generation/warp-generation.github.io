@@ -1,4 +1,3 @@
-
 const AWGm1 = document.getElementById('generateButton1');
 const AWGm2 = document.getElementById('generateButton2');
 const AWGm3 = document.getElementById('generateButton3');
@@ -282,49 +281,104 @@ const downloadConfig = (fileName, content) => {
 	
 };
 
-// AWGm1
-AWGm1.addEventListener('click', async () => {
-  showWarningIfNeeded(async () => {
-	const button = document.getElementById('generateButton1');
-    const status = document.getElementById('status');
-	const randomEndpoint = generateRandomEndpoint();
-	const randomNumber = Math.floor(Math.random() * (99 - 10 + 1)) + 10;
-    button.disabled = true;
-    button.classList.add("button--loading");
-    try {
-		const configData = await fetchFullConfig();
-		const selectedDNS = getSelectedDNS();
-		const i1Toggle = document.getElementById('i1toggle');
-		const i2area = document.getElementById('i2');
-		let i1Value = '';
-		if (i1Toggle.checked && i2area.value.trim()) {i1Value = i2area.value.trim()} else {i1Value = 'I1 = <b 0xce000000010897a297ecc34cd6dd000044d0ec2e2e1ea2991f467ace4222129b5a098823784694b4897b9986ae0b7280135fa85e196d9ad980b150122129ce2a9379531b0fd3e871ca5fdb883c369832f730e272d7b8b74f393f9f0fa43f11e510ecb2219a52984410c204cf875585340c62238e14ad04dff382f2c200e0ee22fe743b9c6b8b043121c5710ec289f471c91ee414fca8b8be8419ae8ce7ffc53837f6ade262891895f3f4cecd31bc93ac5599e18e4f01b472362b8056c3172b513051f8322d1062997ef4a383b01706598d08d48c221d30e74c7ce000cdad36b706b1bf9b0607c32ec4b3203a4ee21ab64df336212b9758280803fcab14933b0e7ee1e04a7becce3e2633f4852585c567894a5f9efe9706a151b615856647e8b7dba69ab357b3982f554549bef9256111b2d67afde0b496f16962d4957ff654232aa9e845b61463908309cfd9de0a6abf5f425f577d7e5f6440652aa8da5f73588e82e9470f3b21b27b28c649506ae1a7f5f15b876f56abc4615f49911549b9bb39dd804fde182bd2dcec0c33bad9b138ca07d4a4a1650a2c2686acea05727e2a78962a840ae428f55627516e73c83dd8893b02358e81b524b4d99fda6df52b3a8d7a5291326e7ac9d773c5b43b8444554ef5aea104a738ed650aa979674bbed38da58ac29d87c29d387d80b526065baeb073ce65f075ccb56e47533aef357dceaa8293a523c5f6f790be90e4731123d3c6152a70576e90b4ab5bc5ead01576c68ab633ff7d36dcde2a0b2c68897e1acfc4d6483aaaeb635dd63c96b2b6a7a2bfe042f6aed82e5363aa850aace12ee3b1a93f30d8ab9537df483152a5527faca21efc9981b304f11fc95336f5b9637b174c5a0659e2b22e159a9fed4b8e93047371175b1d6d9cc8ab745f3b2281537d1c75fb9451871864efa5d184c38c185fd203de206751b92620f7c369e031d2041e152040920ac2c5ab5340bfc9d0561176abf10a147287ea90758575ac6a9f5ac9f390d0d5b23ee12af583383d994e22c0cf42383834bcd3ada1b3825a0664d8f3fb678261d57601ddf94a8a68a7c273a18c08aa99c7ad8c6c42eab67718843597ec9930457359dfdfbce024afc2dcf9348579a57d8d3490b2fa99f278f1c37d87dad9b221acd575192ffae1784f8e60ec7cee4068b6b988f0433d96d6a1b1865f4e155e9fe020279f434f3bf1bd117b717b92f6cd1cc9bea7d45978bcc3f24bda631a36910110a6ec06da35f8966c9279d130347594f13e9e07514fa370754d1424c0a1545c5070ef9fb2acd14233e8a50bfc5978b5bdf8bc1714731f798d21e2004117c61f2989dd44f0cf027b27d4019e81ed4b5c31db347c4a3a4d85048d7093cf16753d7b0d15e078f5c7a5205dc2f87e330a1f716738dce1c6180e9d02869b5546f1c4d2748f8c90d9693cba4e0079297d22fd61402dea32ff0eb69ebd65a5d0b687d87e3a8b2c42b648aa723c7c7daf37abcc4bb85caea2ee8f55bec20e913b3324ab8f5c3304f820d42ad1b9f2ffc1a3af9927136b4419e1e579ab4c2ae3c776d293d397d575df181e6cae0a4ada5d67ecea171cca3288d57c7bbdaee3befe745fb7d634f70386d873b90c4d6c6596bb65af68f9e5121e67ebf0d89d3c909ceedfb32ce9575a7758ff080724e1ab5d5f43074ecb53a479af21ed03d7b6899c36631c0166f9d47e5e1d4528a5d3d3f744029c4b1c190cbfbad06f5f83f7ad0429fa9a2719c56ffe3783460e166de2d8>'}
-		
-		const keepToggle = document.getElementById('keeptogggle');
-		const keepaliveInput = document.getElementById('keepalive');
-		let persistentKeepalive = '';
-		if (keepToggle.checked) {
-			let keepaliveValue = keepaliveInput ? keepaliveInput.value.trim() : '';
-			if (keepaliveValue && /^\d+$/.test(keepaliveValue)) {
-				persistentKeepalive = `\nPersistentKeepalive = ${keepaliveValue}`;
-			} else if (keepaliveValue === '') {
-				persistentKeepalive = `\nPersistentKeepalive = 25`;
-			}
-		}
-		
-		const ipv6Toggle = document.getElementById('ipv6');
-		let address = configData.client_ipv4;
-		let dns = selectedDNS;
-		
-		if (ipv6Toggle.checked) {
-			address = `${configData.client_ipv4}, ${configData.client_ipv6}`;
-		} else {dns = dns.split(',').filter(ip => !ip.includes(':')).join(',');}
-		
-		const allowedIPs = getSelectedSites();
-		const wireGuardText = `[Interface]
+// AWGm1, AWGm2, AWGm3
+async function generateWireGuardConfig(version, buttonId) {
+    showWarningIfNeeded(async () => {
+        const button = document.getElementById(buttonId);
+        const status = document.getElementById('status');
+        const randomEndpoint = generateRandomEndpoint();
+        const randomNumber = Math.floor(Math.random() * (99 - 10 + 1)) + 10;
+        
+        button.disabled = true;
+        button.classList.add("button--loading");
+        
+        try {
+            const configData = await fetchFullConfig();
+            const selectedDNS = getSelectedDNS();
+            const i1Toggle = document.getElementById('i1toggle');
+            const i2area = document.getElementById('i2');
+            
+            let i1Value = '';
+            if (i1Toggle.checked && i2area.value.trim()) {
+                i1Value = i2area.value.trim();
+            } else {
+                if (version === 1) {
+                    i1Value = 'I1 = <b 0xce000000010897a297ecc34cd6dd000044d0ec2e2e1ea2991f467ace4222129b5a098823784694b4897b9986ae0b7280135fa85e196d9ad980b150122129ce2a9379531b0fd3e871ca5fdb883c369832f730e272d7b8b74f393f9f0fa43f11e510ecb2219a52984410c204cf875585340c62238e14ad04dff382f2c200e0ee22fe743b9c6b8b043121c5710ec289f471c91ee414fca8b8be8419ae8ce7ffc53837f6ade262891895f3f4cecd31bc93ac5599e18e4f01b472362b8056c3172b513051f8322d1062997ef4a383b01706598d08d48c221d30e74c7ce000cdad36b706b1bf9b0607c32ec4b3203a4ee21ab64df336212b9758280803fcab14933b0e7ee1e04a7becce3e2633f4852585c567894a5f9efe9706a151b615856647e8b7dba69ab357b3982f554549bef9256111b2d67afde0b496f16962d4957ff654232aa9e845b61463908309cfd9de0a6abf5f425f577d7e5f6440652aa8da5f73588e82e9470f3b21b27b28c649506ae1a7f5f15b876f56abc4615f49911549b9bb39dd804fde182bd2dcec0c33bad9b138ca07d4a4a1650a2c2686acea05727e2a78962a840ae428f55627516e73c83dd8893b02358e81b524b4d99fda6df52b3a8d7a5291326e7ac9d773c5b43b8444554ef5aea104a738ed650aa979674bbed38da58ac29d87c29d387d80b526065baeb073ce65f075ccb56e47533aef357dceaa8293a523c5f6f790be90e4731123d3c6152a70576e90b4ab5bc5ead01576c68ab633ff7d36dcde2a0b2c68897e1acfc4d6483aaaeb635dd63c96b2b6a7a2bfe042f6aed82e5363aa850aace12ee3b1a93f30d8ab9537df483152a5527faca21efc9981b304f11fc95336f5b9637b174c5a0659e2b22e159a9fed4b8e93047371175b1d6d9cc8ab745f3b2281537d1c75fb9451871864efa5d184c38c185fd203de206751b92620f7c369e031d2041e152040920ac2c5ab5340bfc9d0561176abf10a147287ea90758575ac6a9f5ac9f390d0d5b23ee12af583383d994e22c0cf42383834bcd3ada1b3825a0664d8f3fb678261d57601ddf94a8a68a7c273a18c08aa99c7ad8c6c42eab67718843597ec9930457359dfdfbce024afc2dcf9348579a57d8d3490b2fa99f278f1c37d87dad9b221acd575192ffae1784f8e60ec7cee4068b6b988f0433d96d6a1b1865f4e155e9fe020279f434f3bf1bd117b717b92f6cd1cc9bea7d45978bcc3f24bda631a36910110a6ec06da35f8966c9279d130347594f13e9e07514fa370754d1424c0a1545c5070ef9fb2acd14233e8a50bfc5978b5bdf8bc1714731f798d21e2004117c61f2989dd44f0cf027b27d4019e81ed4b5c31db347c4a3a4d85048d7093cf16753d7b0d15e078f5c7a5205dc2f87e330a1f716738dce1c6180e9d02869b5546f1c4d2748f8c90d9693cba4e0079297d22fd61402dea32ff0eb69ebd65a5d0b687d87e3a8b2c42b648aa723c7c7daf37abcc4bb85caea2ee8f55bec20e913b3324ab8f5c3304f820d42ad1b9f2ffc1a3af9927136b4419e1e579ab4c2ae3c776d293d397d575df181e6cae0a4ada5d67ecea171cca3288d57c7bbdaee3befe745fb7d634f70386d873b90c4d6c6596bb65af68f9e5121e67ebf0d89d3c909ceedfb32ce9575a7758ff080724e1ab5d5f43074ecb53a479af21ed03d7b6899c36631c0166f9d47e5e1d4528a5d3d3f744029c4b1c190cbfbad06f5f83f7ad0429fa9a2719c56ffe3783460e166de2d8>';
+                } else if (version === 2) {
+                    i1Value = 'I1 = <b 0xc7000000010809a1ed4edbbe7615000044d017a61a0d774f04290f119e701ef0035df2b0ed571b0b575e6a07246b856eb6ec036fef07f1e07b861251ad737abeb67e64be714c1dcd865312b1b6c35c089c997aeb5c18f808696fe97289513945d84ca846467603e94e44224877f2c1d3261e4ac18740be4bd064369c94fc08978d99b54bf615250998639010c1284248e1d73004b81fcb20b559d8a17eced7eab3964b5b88ca7a3b8579fc8c1c934189e77143b4ac434138114b1048651b56545b87acbef0952763538f3ddeb37cfc6d58b4881c3b719d7ff78f6ee1324a2914a32381c05a64c700466d280be007253bb030d179c4f1b3dc221e1974e2ee6d6e2b9e8d709159b5ef22e1783dbba845c20ca1c83b066c73835920ad70b806df0aee0351e3fc9ab1e42e8b2a30fe235ff0612eee19744949cecee0463b76514ad90c1f7ceaa557c18586ab561d49482e73c85d0143785da14a441bf82f78783b61cccd44aecb1947516e79b5ca5a6b3a8aed6040fae0eeabdc55a88dc19ade832d99fca90c7a629cacc07192d7e47e3c6a271b95b0ea3392562a06a1cab79f40ea92916ebee197b7b5f14b251824e1ed20ff2ca80b1f03a43e45157589bc61b978e97851025b3b7ccc17d291e1cb60fe48a5c26829dce11dd23c2e73265a9ebf8617c985e4fee4681e863f990061f4dea465a7d2524bd0edcf4b48d4b8f25fc359b15babd2637284a4774077dca60091f1a781cfee1bef9713dd5943a579d7470bc5970542fbb27fdf77880a8d8751b1f642c7a3f019a05ab94bf63d3525ef34e9290b5c8d477f2714e6d6e3e4d35c1983f5e16fda57fcdf071b513f8f088dbe8d5a97577d17a5383a496c3f313adfdd47c962bbaebd6aa13b46439eb742622c29ca067db0ec1853064c3cbbffe0a215a19fce47d49703ed58ebbd89721172d256d1cf30188106fb2f863186511401fad54d087aa2fb3d1b85768db386bd7102e8060ac157bac011acdcdae2799b9aee1467c3424013455bd028fcaacdc3c77d28ea199967d617ea7d0d0815f3cc407934a76d1293dccba210d1709a13e5dd67c9ba47cd113f5bdd740358eff13164159fd09bc2f7ec6cfa64d9df7e2e2f88706b0ff3a92ccf6f078456cfe0bdd89292cfe2680badc1eac9f7d36efe8eb6912c7b164508d13e6c0911c15f73c233cbe4fc70ff2ade1e1be4bbb738e0939159e2078a9438f05b756a003371f4861481c38f1cdd2d7b06deb62869e9fe79a8abaa920646fa2e8fa28f0d80c136376c7b56046bae4c05c0cdf64efb8c47bbfc5a1a4c0b045061ef0d71618e0d206a1d7f245fd5c03191b152673ba8dff8e1b8de7c50234a93cba91e3888adb228cc02beded4b1c0946797d3ef02dec2edb6ad0ac21f89f4be364c317da7c22440e9f358d512203f4b7ab20388af68b8915d0152db2c8a0687bfaea870f7529bb92a22b35bd79bc6d490591406346ecd78342ee3563c4883a8251679691c2d4e963397e24653520795511b018915374c954bddb940a9d7a16d1c8bd798fc7dbfb0599a7074e13f87e14efa8d511bb2579ec029b1bda18fe971b30fbe19e986ff2686a69bf3f1bb929de93ae70345ebca998b11e0a2b41890cba628d8f6e7c4e94790735e5299b4ff07cd3080f7d53c9cbe1911d2cd5925b3213e033c272506a87886cf761a283a779564d3241e3c28f632e166b5d756e1786ce077614c4444e3f2aed5decb3613b925ea3e558c21d4faf8ba54edd0f3a5d4>';
+                } else if (version === 3) {
+                    i1Value = 'I1 = <b 0x494e56495445207369703a626f624062696c6f78692e636f6d205349502f322e300d0a5669613a205349502f322e302f55445020706333332e61746c616e74612e636f6d3b6272616e63683d7a39684734624b3737366173646864730d0a4d61782d466f7277617264733a2037300d0a546f3a20426f62203c7369703a626f624062696c6f78692e636f6d3e0d0a46726f6d3a20416c696365203c7369703a616c6963654061746c616e74612e636f6d3e3b7461673d313932383330313737340d0a43616c6c2d49443a20613834623463373665363637313040706333332e61746c616e74612e636f6d0d0a435365713a2033313431353920494e564954450d0a436f6e746163743a203c7369703a616c69636540706333332e61746c616e74612e636f6d3e0d0a436f6e74656e742d547970653a206170706c69636174696f6e2f7364700d0a436f6e74656e742d4c656e6774683a20300d0a0d0a>\nI2 = <b 0x5349502f322e302031303020547279696e670d0a5669613a205349502f322e302f55445020706333332e61746c616e74612e636f6d3b6272616e63683d7a39684734624b3737366173646864730d0a546f3a20426f62203c7369703a626f624062696c6f78692e636f6d3e0d0a46726f6d3a20416c696365203c7369703a616c6963654061746c616e74612e636f6d3e3b7461673d313932383330313737340d0a43616c6c2d49443a20613834623463373665363637313040706333332e61746c616e74612e636f6d0d0a435365713a2033313431353920494e564954450d0a436f6e74656e742d4c656e6774683a20300d0a0d0a>';
+                }
+            }
+            
+            const keepToggle = document.getElementById('keeptogggle');
+            const keepaliveInput = document.getElementById('keepalive');
+            let persistentKeepalive = '';
+            if (keepToggle.checked) {
+                let keepaliveValue = keepaliveInput ? keepaliveInput.value.trim() : '';
+                if (keepaliveValue && /^\d+$/.test(keepaliveValue)) {
+                    persistentKeepalive = `\nPersistentKeepalive = ${keepaliveValue}`;
+                } else if (keepaliveValue === '') {
+                    persistentKeepalive = `\nPersistentKeepalive = 25`;
+                }
+            }
+            
+            const ipv6Toggle = document.getElementById('ipv6');
+            let address = configData.client_ipv4;
+            let dns = selectedDNS;
+            
+            if (ipv6Toggle.checked) {
+                address = `${configData.client_ipv4}, ${configData.client_ipv6}`;
+            } else {
+                dns = dns.split(',').filter(ip => !ip.includes(':')).join(',');
+            }
+            
+			const mtuInput = document.getElementById('mtu');
+			const mtuVal = mtuInput?.value.trim() || mtuInput?.placeholder || '1420';
+			
+    // --- AWG 3.0 ---
+		const awg3Toggle = document.getElementById('awg3');
+        let awg3Config = '';
+        if (awg3Toggle && awg3Toggle.checked) {
+            const getValue = (id) => {
+				const el = document.getElementById(id);
+				if (!el) return '';
+				const val = el.value.trim() || el.placeholder || '';
+				if (!val || Number(val) === 0) return '';
+				return val;
+			};
+
+    const cpa = getValue('cpaInput');
+    const rkat = getValue('rkatInput');
+    const rt = getValue('rtInput');
+    const rat = getValue('ratInput');
+    const kt = getValue('ktInput');
+    const mha = getValue('mhaInput');
+
+                if (cpa) awg3Config += `\nContentPaddingAddition = ${cpa}`;
+                if (rkat) awg3Config += `\nRekeyAfterTime = ${rkat}`;
+                if (rt) awg3Config += `\nRekeyTimeout = ${rt}`;
+                if (rat) awg3Config += `\nRejectAfterTime = ${rat}`;
+                if (kt) awg3Config += `\nKeepaliveTimeout = ${kt}`;
+                if (mha) awg3Config += `\nMaxHandshakeAttempts = ${mha}`;
+            }
+			
+	// --- AWG 3.1 ---
+const isAwg31 = document.getElementById('awg3_1')?.checked;
+const isRandomTrailers = document.getElementById('awg3_1_1')?.checked;
+const isDisableCookies = document.getElementById('awg3_1_2')?.checked;
+
+if (isAwg31) {
+    if (isRandomTrailers) awg3Config += `\nRandomTrailers = on`;
+    if (isDisableCookies) awg3Config += `\nDisableCookies = on`;
+}
+			
+            const allowedIPs = getSelectedSites();
+            const wireGuardText = `[Interface]
 PrivateKey = ${configData.privKey}
 Address = ${address}
 DNS = ${dns}
-MTU = 1280
+MTU = ${mtuVal}
 S1 = 0
 S2 = 0
 S3 = 0
@@ -336,187 +390,35 @@ H1 = 1
 H2 = 2
 H3 = 3
 H4 = 4
-${i1Value}
+${i1Value}${awg3Config}
 
 [Peer]
 PublicKey = ${configData.peer_pub}
 AllowedIPs = ${allowedIPs}
 Endpoint = ${randomEndpoint}${persistentKeepalive}`;
-	    const content = wireGuardText || "No configuration available";
-    if (content === "No configuration available") {
-        showPopup('No configuration to download', 'Ошибка');
-        return;
-    }
-	
-    const fileName = getConfigFilename('WARPv1', randomNumber);
-    downloadConfig(fileName, content);
-    showPopup('Скачивание конфигурации');
-    } catch (error) {
-        console.error('Error processing configuration:', error);
-showPopup('Ошибка. Подождите несколько минут или воспользуйтесь <a href="https://generator-config-warp.vercel.app/" target="_blank" style="color: #fff; text-decoration: underline; font-weight: bold;">зеркалом</a>', 'error');
-    } finally {
-        button.disabled = false;
-        button.classList.remove("button--loading");
-    } 
- });
-});
+            
+            const content = wireGuardText || "No configuration available";
+            if (content === "No configuration available") {
+                showPopup('No configuration to download', 'Ошибка');
+                return;
+            }
+            
+            const fileName = getConfigFilename(`WARPv${version}`, randomNumber);
+            downloadConfig(fileName, content);
+            showPopup('Скачивание конфигурации');
+        } catch (error) {
+            console.error('Error processing configuration:', error);
+            showPopup('Ошибка. Подождите несколько минут или воспользуйтесь <a href="https://generator-config-warp.vercel.app/" target="_blank" style="color: #fff; text-decoration: underline; font-weight: bold;">зеркалом</a>', 'error');
+        } finally {
+            button.disabled = false;
+            button.classList.remove("button--loading");
+        }
+    });
+}
 
-// AWGm2
-AWGm2.addEventListener('click', async () => {
- showWarningIfNeeded(async () => {
-    const button = document.getElementById('generateButton2');
-    const status = document.getElementById('status');
-	const randomEndpoint = generateRandomEndpoint();
-    const randomNumber = Math.floor(Math.random() * (99 - 10 + 1)) + 10;
-    button.disabled = true;
-    button.classList.add("button--loading");
-    try {
-        const configData = await fetchFullConfig();
-		const selectedDNS = getSelectedDNS();
-		const i1Toggle = document.getElementById('i1toggle');
-		const i2area = document.getElementById('i2');
-		let i1Value = '';
-		if (i1Toggle.checked && i2area.value.trim()) {i1Value = i2area.value.trim()} else {i1Value = 'I1 = <b 0xc7000000010809a1ed4edbbe7615000044d017a61a0d774f04290f119e701ef0035df2b0ed571b0b575e6a07246b856eb6ec036fef07f1e07b861251ad737abeb67e64be714c1dcd865312b1b6c35c089c997aeb5c18f808696fe97289513945d84ca846467603e94e44224877f2c1d3261e4ac18740be4bd064369c94fc08978d99b54bf615250998639010c1284248e1d73004b81fcb20b559d8a17eced7eab3964b5b88ca7a3b8579fc8c1c934189e77143b4ac434138114b1048651b56545b87acbef0952763538f3ddeb37cfc6d58b4881c3b719d7ff78f6ee1324a2914a32381c05a64c700466d280be007253bb030d179c4f1b3dc221e1974e2ee6d6e2b9e8d709159b5ef22e1783dbba845c20ca1c83b066c73835920ad70b806df0aee0351e3fc9ab1e42e8b2a30fe235ff0612eee19744949cecee0463b76514ad90c1f7ceaa557c18586ab561d49482e73c85d0143785da14a441bf82f78783b61cccd44aecb1947516e79b5ca5a6b3a8aed6040fae0eeabdc55a88dc19ade832d99fca90c7a629cacc07192d7e47e3c6a271b95b0ea3392562a06a1cab79f40ea92916ebee197b7b5f14b251824e1ed20ff2ca80b1f03a43e45157589bc61b978e97851025b3b7ccc17d291e1cb60fe48a5c26829dce11dd23c2e73265a9ebf8617c985e4fee4681e863f990061f4dea465a7d2524bd0edcf4b48d4b8f25fc359b15babd2637284a4774077dca60091f1a781cfee1bef9713dd5943a579d7470bc5970542fbb27fdf77880a8d8751b1f642c7a3f019a05ab94bf63d3525ef34e9290b5c8d477f2714e6d6e3e4d35c1983f5e16fda57fcdf071b513f8f088dbe8d5a97577d17a5383a496c3f313adfdd47c962bbaebd6aa13b46439eb742622c29ca067db0ec1853064c3cbbffe0a215a19fce47d49703ed58ebbd89721172d256d1cf30188106fb2f863186511401fad54d087aa2fb3d1b85768db386bd7102e8060ac157bac011acdcdae2799b9aee1467c3424013455bd028fcaacdc3c77d28ea199967d617ea7d0d0815f3cc407934a76d1293dccba210d1709a13e5dd67c9ba47cd113f5bdd740358eff13164159fd09bc2f7ec6cfa64d9df7e2e2f88706b0ff3a92ccf6f078456cfe0bdd89292cfe2680badc1eac9f7d36efe8eb6912c7b164508d13e6c0911c15f73c233cbe4fc70ff2ade1e1be4bbb738e0939159e2078a9438f05b756a003371f4861481c38f1cdd2d7b06deb62869e9fe79a8abaa920646fa2e8fa28f0d80c136376c7b56046bae4c05c0cdf64efb8c47bbfc5a1a4c0b045061ef0d71618e0d206a1d7f245fd5c03191b152673ba8dff8e1b8de7c50234a93cba91e3888adb228cc02beded4b1c0946797d3ef02dec2edb6ad0ac21f89f4be364c317da7c22440e9f358d512203f4b7ab20388af68b8915d0152db2c8a0687bfaea870f7529bb92a22b35bd79bc6d490591406346ecd78342ee3563c4883a8251679691c2d4e963397e24653520795511b018915374c954bddb940a9d7a16d1c8bd798fc7dbfb0599a7074e13f87e14efa8d511bb2579ec029b1bda18fe971b30fbe19e986ff2686a69bf3f1bb929de93ae70345ebca998b11e0a2b41890cba628d8f6e7c4e94790735e5299b4ff07cd3080f7d53c9cbe1911d2cd5925b3213e033c272506a87886cf761a283a779564d3241e3c28f632e166b5d756e1786ce077614c4444e3f2aed5decb3613b925ea3e558c21d4faf8ba54edd0f3a5d4>'}
-		
-		const keepToggle = document.getElementById('keeptogggle');
-		const keepaliveInput = document.getElementById('keepalive');
-		let persistentKeepalive = '';
-		if (keepToggle.checked) {
-			let keepaliveValue = keepaliveInput ? keepaliveInput.value.trim() : '';
-			if (keepaliveValue && /^\d+$/.test(keepaliveValue)) {
-				persistentKeepalive = `\nPersistentKeepalive = ${keepaliveValue}`;
-			} else if (keepaliveValue === '') {
-				persistentKeepalive = `\nPersistentKeepalive = 25`;
-			}
-		}
-		
-		const ipv6Toggle = document.getElementById('ipv6');
-		let address = configData.client_ipv4;
-		let dns = selectedDNS;
-		
-		if (ipv6Toggle.checked) {
-			address = `${configData.client_ipv4}, ${configData.client_ipv6}`;			
-		} else {dns = dns.split(',').filter(ip => !ip.includes(':')).join(',');}
-		
-		const allowedIPs = getSelectedSites();
-		const wireGuardText = `[Interface]
-PrivateKey = ${configData.privKey}
-Address = ${address}
-DNS = ${dns}	
-MTU = 1280
-S1 = 0
-S2 = 0
-S3 = 0
-S4 = 0
-Jc = 4
-Jmin = 40
-Jmax = 70
-H1 = 1
-H2 = 2
-H3 = 3
-H4 = 4
-${i1Value}
-
-[Peer]
-PublicKey = ${configData.peer_pub}
-AllowedIPs = ${allowedIPs}
-Endpoint = ${randomEndpoint}${persistentKeepalive}`;
-	    const content = wireGuardText || "No configuration available";
-    if (content === "No configuration available") {
-        showPopup('No configuration to download', 'Ошибка');
-        return;
-    }
-    const fileName = getConfigFilename('WARPv2', randomNumber);
-    downloadConfig(fileName, content);
-    showPopup('Скачивание конфигурации');
-    } catch (error) {
-        console.error('Error processing configuration:', error);
-showPopup('Ошибка. Подождите несколько минут или воспользуйтесь <a href="https://generator-config-warp.vercel.app/" target="_blank" style="color: #fff; text-decoration: underline; font-weight: bold;">зеркалом</a>', 'error');
-    } finally {
-        button.disabled = false;
-        button.classList.remove("button--loading");
-    } 
-});
- });
-
-// AWGm3
-AWGm3.addEventListener('click', async () => {
- showWarningIfNeeded(async () => {	
-    const button = document.getElementById('generateButton3');
-    const status = document.getElementById('status');
-	const randomEndpoint = generateRandomEndpoint();
-    const randomNumber = Math.floor(Math.random() * (99 - 10 + 1)) + 10;
-    button.disabled = true;
-    button.classList.add("button--loading");
-    try {
-		const configData = await fetchFullConfig();
-		const selectedDNS = getSelectedDNS();
-		const i1Toggle = document.getElementById('i1toggle');
-		const i2area = document.getElementById('i2');
-		let i1Value = '';
-		if (i1Toggle.checked && i2area.value.trim()) {i1Value = i2area.value.trim()} else {i1Value = 'I1 = <b 0x494e56495445207369703a626f624062696c6f78692e636f6d205349502f322e300d0a5669613a205349502f322e302f55445020706333332e61746c616e74612e636f6d3b6272616e63683d7a39684734624b3737366173646864730d0a4d61782d466f7277617264733a2037300d0a546f3a20426f62203c7369703a626f624062696c6f78692e636f6d3e0d0a46726f6d3a20416c696365203c7369703a616c6963654061746c616e74612e636f6d3e3b7461673d313932383330313737340d0a43616c6c2d49443a20613834623463373665363637313040706333332e61746c616e74612e636f6d0d0a435365713a2033313431353920494e564954450d0a436f6e746163743a203c7369703a616c69636540706333332e61746c616e74612e636f6d3e0d0a436f6e74656e742d547970653a206170706c69636174696f6e2f7364700d0a436f6e74656e742d4c656e6774683a20300d0a0d0a>\nI2 = <b 0x5349502f322e302031303020547279696e670d0a5669613a205349502f322e302f55445020706333332e61746c616e74612e636f6d3b6272616e63683d7a39684734624b3737366173646864730d0a546f3a20426f62203c7369703a626f624062696c6f78692e636f6d3e0d0a46726f6d3a20416c696365203c7369703a616c6963654061746c616e74612e636f6d3e3b7461673d313932383330313737340d0a43616c6c2d49443a20613834623463373665363637313040706333332e61746c616e74612e636f6d0d0a435365713a2033313431353920494e564954450d0a436f6e74656e742d4c656e6774683a20300d0a0d0a>'}
-		
-		const keepToggle = document.getElementById('keeptogggle');
-		const keepaliveInput = document.getElementById('keepalive');
-		let persistentKeepalive = '';
-		if (keepToggle.checked) {
-			let keepaliveValue = keepaliveInput ? keepaliveInput.value.trim() : '';
-			if (keepaliveValue && /^\d+$/.test(keepaliveValue)) {
-				persistentKeepalive = `\nPersistentKeepalive = ${keepaliveValue}`;
-			} else if (keepaliveValue === '') {
-				persistentKeepalive = `\nPersistentKeepalive = 25`;
-			}
-		}		
-		
-		const ipv6Toggle = document.getElementById('ipv6');
-		let address = configData.client_ipv4;
-		let dns = selectedDNS;
-		
-		if (ipv6Toggle.checked) {
-			address = `${configData.client_ipv4}, ${configData.client_ipv6}`;
-		} else {dns = dns.split(',').filter(ip => !ip.includes(':')).join(',');}
-		
-		const allowedIPs = getSelectedSites();
-		const wireGuardText = `[Interface]
-PrivateKey = ${configData.privKey}
-Address = ${address}
-DNS = ${dns}	
-MTU = 1280
-S1 = 0
-S2 = 0
-S3 = 0
-S4 = 0
-Jc = 4
-Jmin = 40
-Jmax = 70
-H1 = 1
-H2 = 2
-H3 = 3
-H4 = 4
-${i1Value}
-
-[Peer]
-PublicKey = ${configData.peer_pub}
-AllowedIPs = ${allowedIPs}
-Endpoint = ${randomEndpoint}${persistentKeepalive}`;
-	    const content = wireGuardText || "No configuration available";
-    if (content === "No configuration available") {
-        showPopup('No configuration to download', 'Ошибка');
-        return;
-    }
-
-    const fileName = getConfigFilename('WARPv3', randomNumber);
-    downloadConfig(fileName, content);
-    showPopup('Скачивание конфигурации');
-    } catch (error) {
-        console.error('Error processing configuration:', error);
-showPopup('Ошибка. Подождите несколько минут или воспользуйтесь <a href="https://generator-config-warp.vercel.app/" target="_blank" style="color: #fff; text-decoration: underline; font-weight: bold;">зеркалом</a>', 'error');
-    } finally {
-        button.disabled = false;
-        button.classList.remove("button--loading");
-    } 
-});
-});
+AWGm1.addEventListener('click', () => generateWireGuardConfig(1, 'generateButton1'));
+AWGm2.addEventListener('click', () => generateWireGuardConfig(2, 'generateButton2'));
+AWGm3.addEventListener('click', () => generateWireGuardConfig(3, 'generateButton3'));
 
 // Clash
 Clash.addEventListener('click', async () => {
@@ -534,6 +436,47 @@ Clash.addEventListener('click', async () => {
 		let msqg = ''
 		let msqp = ''		
 		let proxy = ''
+		
+		const mtuInput = document.querySelector('#infoModal2 #mtu');
+		const mtuVal = mtuInput?.value.trim() || mtuInput?.placeholder || '1420';
+		
+    // --- AWG 3.0 ---
+		const awg3cToggle = document.getElementById('awg3c');
+		let awg3cConfig = '';
+		if (awg3cToggle && awg3cToggle.checked) {
+			const getValue = (id) => {
+				const el = document.getElementById(id);
+				if (!el) return '';
+				const val = el.value.trim() || el.placeholder || '';
+				if (!val || Number(val) === 0) return '';
+				return val;
+			};
+
+    const cpa = getValue('cpaInput');
+    const rkat = getValue('rkatInput');
+    const rt = getValue('rtInput');
+    const rat = getValue('ratInput');
+    const kt = getValue('ktInput');
+    const mha = getValue('mhaInput');
+
+                if (cpa) awg3cConfig += `\n   content-padding-addition: ${cpa}`;
+                if (rkat) awg3cConfig += `\n   rekey-after-time: ${rkat}`;
+                if (rt) awg3cConfig += `\n   rekey-timeout: ${rt}`;
+                if (rat) awg3cConfig += `\n   reject-after-time: ${rat}`;
+                if (kt) awg3cConfig += `\n   keepalive-timeout: ${kt}`;
+                if (mha) awg3cConfig += `\n   max-handshake-attempts: ${mha}`;
+            }
+
+	// --- AWG 3.1 ---
+const isAwg31 = document.getElementById('awg3_1c')?.checked;
+const isRandomTrailers = document.getElementById('awg3_1_1c')?.checked;
+const isDisableCookies = document.getElementById('awg3_1_2c')?.checked;
+
+if (isAwg31) {
+    if (isRandomTrailers) awg3cConfig += `\n   random-trailers: true`;
+    if (isDisableCookies) awg3cConfig += `\n   disable-cookies: true`;
+}
+
 		if (msqToggle.checked) {
 			const configDataMSQ = await fetchFullConfigMSQ()
 			msq = `msq: &msq
@@ -542,7 +485,7 @@ Clash.addEventListener('click', async () => {
   public-key: ${configDataMSQ.peer_pub}
   ip: ${configDataMSQ.client_ipv4}
   ipv6: ${configDataMSQ.client_ipv6}
-  mtu: 1280
+  mtu: ${mtuVal}
   udp: true
   remote-dns-resolve: true
   dns: [1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001]`;
@@ -585,7 +528,7 @@ rules:
    h2: 2
    h3: 3
    h4: 4  
-   i1: <b 0xc800000001018800002b45615e996de27ff5ec5f583061ab38eac69fd8fec356802847cd1c7c15a87402bb0a433d4054defedc066e>`;
+   i1: <b 0xc800000001018800002b45615e996de27ff5ec5f583061ab38eac69fd8fec356802847cd1c7c15a87402bb0a433d4054defedc066e>${awg3cConfig}`;
 			proxy = `- name: "🇵🇱 PL"
   <<: [ *warp-common, *awg ]
   server: pl.tribukvy.ltd
@@ -660,7 +603,7 @@ rules:
   public-key: ${configData.peer_pub}
   allowed-ips: ['0.0.0.0/0']
   udp: true
-  mtu: 1280
+  mtu: ${mtuVal}
   remote-dns-resolve: true
   dns: [1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001]
 ${awg}  
@@ -680,7 +623,7 @@ proxies:
    h2: 2
    h3: 3
    h4: 4  
-   i1: <b 0xce000000010897a297ecc34cd6dd000044d0ec2e2e1ea2991f467ace4222129b5a098823784694b4897b9986ae0b7280135fa85e196d9ad980b150122129ce2a9379531b0fd3e871ca5fdb883c369832f730e272d7b8b74f393f9f0fa43f11e510ecb2219a52984410c204cf875585340c62238e14ad04dff382f2c200e0ee22fe743b9c6b8b043121c5710ec289f471c91ee414fca8b8be8419ae8ce7ffc53837f6ade262891895f3f4cecd31bc93ac5599e18e4f01b472362b8056c3172b513051f8322d1062997ef4a383b01706598d08d48c221d30e74c7ce000cdad36b706b1bf9b0607c32ec4b3203a4ee21ab64df336212b9758280803fcab14933b0e7ee1e04a7becce3e2633f4852585c567894a5f9efe9706a151b615856647e8b7dba69ab357b3982f554549bef9256111b2d67afde0b496f16962d4957ff654232aa9e845b61463908309cfd9de0a6abf5f425f577d7e5f6440652aa8da5f73588e82e9470f3b21b27b28c649506ae1a7f5f15b876f56abc4615f49911549b9bb39dd804fde182bd2dcec0c33bad9b138ca07d4a4a1650a2c2686acea05727e2a78962a840ae428f55627516e73c83dd8893b02358e81b524b4d99fda6df52b3a8d7a5291326e7ac9d773c5b43b8444554ef5aea104a738ed650aa979674bbed38da58ac29d87c29d387d80b526065baeb073ce65f075ccb56e47533aef357dceaa8293a523c5f6f790be90e4731123d3c6152a70576e90b4ab5bc5ead01576c68ab633ff7d36dcde2a0b2c68897e1acfc4d6483aaaeb635dd63c96b2b6a7a2bfe042f6aed82e5363aa850aace12ee3b1a93f30d8ab9537df483152a5527faca21efc9981b304f11fc95336f5b9637b174c5a0659e2b22e159a9fed4b8e93047371175b1d6d9cc8ab745f3b2281537d1c75fb9451871864efa5d184c38c185fd203de206751b92620f7c369e031d2041e152040920ac2c5ab5340bfc9d0561176abf10a147287ea90758575ac6a9f5ac9f390d0d5b23ee12af583383d994e22c0cf42383834bcd3ada1b3825a0664d8f3fb678261d57601ddf94a8a68a7c273a18c08aa99c7ad8c6c42eab67718843597ec9930457359dfdfbce024afc2dcf9348579a57d8d3490b2fa99f278f1c37d87dad9b221acd575192ffae1784f8e60ec7cee4068b6b988f0433d96d6a1b1865f4e155e9fe020279f434f3bf1bd117b717b92f6cd1cc9bea7d45978bcc3f24bda631a36910110a6ec06da35f8966c9279d130347594f13e9e07514fa370754d1424c0a1545c5070ef9fb2acd14233e8a50bfc5978b5bdf8bc1714731f798d21e2004117c61f2989dd44f0cf027b27d4019e81ed4b5c31db347c4a3a4d85048d7093cf16753d7b0d15e078f5c7a5205dc2f87e330a1f716738dce1c6180e9d02869b5546f1c4d2748f8c90d9693cba4e0079297d22fd61402dea32ff0eb69ebd65a5d0b687d87e3a8b2c42b648aa723c7c7daf37abcc4bb85caea2ee8f55bec20e913b3324ab8f5c3304f820d42ad1b9f2ffc1a3af9927136b4419e1e579ab4c2ae3c776d293d397d575df181e6cae0a4ada5d67ecea171cca3288d57c7bbdaee3befe745fb7d634f70386d873b90c4d6c6596bb65af68f9e5121e67ebf0d89d3c909ceedfb32ce9575a7758ff080724e1ab5d5f43074ecb53a479af21ed03d7b6899c36631c0166f9d47e5e1d4528a5d3d3f744029c4b1c190cbfbad06f5f83f7ad0429fa9a2719c56ffe3783460e166de2d8>
+   i1: <b 0xce000000010897a297ecc34cd6dd000044d0ec2e2e1ea2991f467ace4222129b5a098823784694b4897b9986ae0b7280135fa85e196d9ad980b150122129ce2a9379531b0fd3e871ca5fdb883c369832f730e272d7b8b74f393f9f0fa43f11e510ecb2219a52984410c204cf875585340c62238e14ad04dff382f2c200e0ee22fe743b9c6b8b043121c5710ec289f471c91ee414fca8b8be8419ae8ce7ffc53837f6ade262891895f3f4cecd31bc93ac5599e18e4f01b472362b8056c3172b513051f8322d1062997ef4a383b01706598d08d48c221d30e74c7ce000cdad36b706b1bf9b0607c32ec4b3203a4ee21ab64df336212b9758280803fcab14933b0e7ee1e04a7becce3e2633f4852585c567894a5f9efe9706a151b615856647e8b7dba69ab357b3982f554549bef9256111b2d67afde0b496f16962d4957ff654232aa9e845b61463908309cfd9de0a6abf5f425f577d7e5f6440652aa8da5f73588e82e9470f3b21b27b28c649506ae1a7f5f15b876f56abc4615f49911549b9bb39dd804fde182bd2dcec0c33bad9b138ca07d4a4a1650a2c2686acea05727e2a78962a840ae428f55627516e73c83dd8893b02358e81b524b4d99fda6df52b3a8d7a5291326e7ac9d773c5b43b8444554ef5aea104a738ed650aa979674bbed38da58ac29d87c29d387d80b526065baeb073ce65f075ccb56e47533aef357dceaa8293a523c5f6f790be90e4731123d3c6152a70576e90b4ab5bc5ead01576c68ab633ff7d36dcde2a0b2c68897e1acfc4d6483aaaeb635dd63c96b2b6a7a2bfe042f6aed82e5363aa850aace12ee3b1a93f30d8ab9537df483152a5527faca21efc9981b304f11fc95336f5b9637b174c5a0659e2b22e159a9fed4b8e93047371175b1d6d9cc8ab745f3b2281537d1c75fb9451871864efa5d184c38c185fd203de206751b92620f7c369e031d2041e152040920ac2c5ab5340bfc9d0561176abf10a147287ea90758575ac6a9f5ac9f390d0d5b23ee12af583383d994e22c0cf42383834bcd3ada1b3825a0664d8f3fb678261d57601ddf94a8a68a7c273a18c08aa99c7ad8c6c42eab67718843597ec9930457359dfdfbce024afc2dcf9348579a57d8d3490b2fa99f278f1c37d87dad9b221acd575192ffae1784f8e60ec7cee4068b6b988f0433d96d6a1b1865f4e155e9fe020279f434f3bf1bd117b717b92f6cd1cc9bea7d45978bcc3f24bda631a36910110a6ec06da35f8966c9279d130347594f13e9e07514fa370754d1424c0a1545c5070ef9fb2acd14233e8a50bfc5978b5bdf8bc1714731f798d21e2004117c61f2989dd44f0cf027b27d4019e81ed4b5c31db347c4a3a4d85048d7093cf16753d7b0d15e078f5c7a5205dc2f87e330a1f716738dce1c6180e9d02869b5546f1c4d2748f8c90d9693cba4e0079297d22fd61402dea32ff0eb69ebd65a5d0b687d87e3a8b2c42b648aa723c7c7daf37abcc4bb85caea2ee8f55bec20e913b3324ab8f5c3304f820d42ad1b9f2ffc1a3af9927136b4419e1e579ab4c2ae3c776d293d397d575df181e6cae0a4ada5d67ecea171cca3288d57c7bbdaee3befe745fb7d634f70386d873b90c4d6c6596bb65af68f9e5121e67ebf0d89d3c909ceedfb32ce9575a7758ff080724e1ab5d5f43074ecb53a479af21ed03d7b6899c36631c0166f9d47e5e1d4528a5d3d3f744029c4b1c190cbfbad06f5f83f7ad0429fa9a2719c56ffe3783460e166de2d8>${awg3cConfig}
 - name: "Стандартный 2"
   <<: *warp-common
   server: 162.159.192.1
@@ -695,7 +638,7 @@ proxies:
    h2: 2
    h3: 3
    h4: 4
-   i1: <b 0xc7000000010809a1ed4edbbe7615000044d017a61a0d774f04290f119e701ef0035df2b0ed571b0b575e6a07246b856eb6ec036fef07f1e07b861251ad737abeb67e64be714c1dcd865312b1b6c35c089c997aeb5c18f808696fe97289513945d84ca846467603e94e44224877f2c1d3261e4ac18740be4bd064369c94fc08978d99b54bf615250998639010c1284248e1d73004b81fcb20b559d8a17eced7eab3964b5b88ca7a3b8579fc8c1c934189e77143b4ac434138114b1048651b56545b87acbef0952763538f3ddeb37cfc6d58b4881c3b719d7ff78f6ee1324a2914a32381c05a64c700466d280be007253bb030d179c4f1b3dc221e1974e2ee6d6e2b9e8d709159b5ef22e1783dbba845c20ca1c83b066c73835920ad70b806df0aee0351e3fc9ab1e42e8b2a30fe235ff0612eee19744949cecee0463b76514ad90c1f7ceaa557c18586ab561d49482e73c85d0143785da14a441bf82f78783b61cccd44aecb1947516e79b5ca5a6b3a8aed6040fae0eeabdc55a88dc19ade832d99fca90c7a629cacc07192d7e47e3c6a271b95b0ea3392562a06a1cab79f40ea92916ebee197b7b5f14b251824e1ed20ff2ca80b1f03a43e45157589bc61b978e97851025b3b7ccc17d291e1cb60fe48a5c26829dce11dd23c2e73265a9ebf8617c985e4fee4681e863f990061f4dea465a7d2524bd0edcf4b48d4b8f25fc359b15babd2637284a4774077dca60091f1a781cfee1bef9713dd5943a579d7470bc5970542fbb27fdf77880a8d8751b1f642c7a3f019a05ab94bf63d3525ef34e9290b5c8d477f2714e6d6e3e4d35c1983f5e16fda57fcdf071b513f8f088dbe8d5a97577d17a5383a496c3f313adfdd47c962bbaebd6aa13b46439eb742622c29ca067db0ec1853064c3cbbffe0a215a19fce47d49703ed58ebbd89721172d256d1cf30188106fb2f863186511401fad54d087aa2fb3d1b85768db386bd7102e8060ac157bac011acdcdae2799b9aee1467c3424013455bd028fcaacdc3c77d28ea199967d617ea7d0d0815f3cc407934a76d1293dccba210d1709a13e5dd67c9ba47cd113f5bdd740358eff13164159fd09bc2f7ec6cfa64d9df7e2e2f88706b0ff3a92ccf6f078456cfe0bdd89292cfe2680badc1eac9f7d36efe8eb6912c7b164508d13e6c0911c15f73c233cbe4fc70ff2ade1e1be4bbb738e0939159e2078a9438f05b756a003371f4861481c38f1cdd2d7b06deb62869e9fe79a8abaa920646fa2e8fa28f0d80c136376c7b56046bae4c05c0cdf64efb8c47bbfc5a1a4c0b045061ef0d71618e0d206a1d7f245fd5c03191b152673ba8dff8e1b8de7c50234a93cba91e3888adb228cc02beded4b1c0946797d3ef02dec2edb6ad0ac21f89f4be364c317da7c22440e9f358d512203f4b7ab20388af68b8915d0152db2c8a0687bfaea870f7529bb92a22b35bd79bc6d490591406346ecd78342ee3563c4883a8251679691c2d4e963397e24653520795511b018915374c954bddb940a9d7a16d1c8bd798fc7dbfb0599a7074e13f87e14efa8d511bb2579ec029b1bda18fe971b30fbe19e986ff2686a69bf3f1bb929de93ae70345ebca998b11e0a2b41890cba628d8f6e7c4e94790735e5299b4ff07cd3080f7d53c9cbe1911d2cd5925b3213e033c272506a87886cf761a283a779564d3241e3c28f632e166b5d756e1786ce077614c4444e3f2aed5decb3613b925ea3e558c21d4faf8ba54edd0f3a5d4>
+   i1: <b 0xc7000000010809a1ed4edbbe7615000044d017a61a0d774f04290f119e701ef0035df2b0ed571b0b575e6a07246b856eb6ec036fef07f1e07b861251ad737abeb67e64be714c1dcd865312b1b6c35c089c997aeb5c18f808696fe97289513945d84ca846467603e94e44224877f2c1d3261e4ac18740be4bd064369c94fc08978d99b54bf615250998639010c1284248e1d73004b81fcb20b559d8a17eced7eab3964b5b88ca7a3b8579fc8c1c934189e77143b4ac434138114b1048651b56545b87acbef0952763538f3ddeb37cfc6d58b4881c3b719d7ff78f6ee1324a2914a32381c05a64c700466d280be007253bb030d179c4f1b3dc221e1974e2ee6d6e2b9e8d709159b5ef22e1783dbba845c20ca1c83b066c73835920ad70b806df0aee0351e3fc9ab1e42e8b2a30fe235ff0612eee19744949cecee0463b76514ad90c1f7ceaa557c18586ab561d49482e73c85d0143785da14a441bf82f78783b61cccd44aecb1947516e79b5ca5a6b3a8aed6040fae0eeabdc55a88dc19ade832d99fca90c7a629cacc07192d7e47e3c6a271b95b0ea3392562a06a1cab79f40ea92916ebee197b7b5f14b251824e1ed20ff2ca80b1f03a43e45157589bc61b978e97851025b3b7ccc17d291e1cb60fe48a5c26829dce11dd23c2e73265a9ebf8617c985e4fee4681e863f990061f4dea465a7d2524bd0edcf4b48d4b8f25fc359b15babd2637284a4774077dca60091f1a781cfee1bef9713dd5943a579d7470bc5970542fbb27fdf77880a8d8751b1f642c7a3f019a05ab94bf63d3525ef34e9290b5c8d477f2714e6d6e3e4d35c1983f5e16fda57fcdf071b513f8f088dbe8d5a97577d17a5383a496c3f313adfdd47c962bbaebd6aa13b46439eb742622c29ca067db0ec1853064c3cbbffe0a215a19fce47d49703ed58ebbd89721172d256d1cf30188106fb2f863186511401fad54d087aa2fb3d1b85768db386bd7102e8060ac157bac011acdcdae2799b9aee1467c3424013455bd028fcaacdc3c77d28ea199967d617ea7d0d0815f3cc407934a76d1293dccba210d1709a13e5dd67c9ba47cd113f5bdd740358eff13164159fd09bc2f7ec6cfa64d9df7e2e2f88706b0ff3a92ccf6f078456cfe0bdd89292cfe2680badc1eac9f7d36efe8eb6912c7b164508d13e6c0911c15f73c233cbe4fc70ff2ade1e1be4bbb738e0939159e2078a9438f05b756a003371f4861481c38f1cdd2d7b06deb62869e9fe79a8abaa920646fa2e8fa28f0d80c136376c7b56046bae4c05c0cdf64efb8c47bbfc5a1a4c0b045061ef0d71618e0d206a1d7f245fd5c03191b152673ba8dff8e1b8de7c50234a93cba91e3888adb228cc02beded4b1c0946797d3ef02dec2edb6ad0ac21f89f4be364c317da7c22440e9f358d512203f4b7ab20388af68b8915d0152db2c8a0687bfaea870f7529bb92a22b35bd79bc6d490591406346ecd78342ee3563c4883a8251679691c2d4e963397e24653520795511b018915374c954bddb940a9d7a16d1c8bd798fc7dbfb0599a7074e13f87e14efa8d511bb2579ec029b1bda18fe971b30fbe19e986ff2686a69bf3f1bb929de93ae70345ebca998b11e0a2b41890cba628d8f6e7c4e94790735e5299b4ff07cd3080f7d53c9cbe1911d2cd5925b3213e033c272506a87886cf761a283a779564d3241e3c28f632e166b5d756e1786ce077614c4444e3f2aed5decb3613b925ea3e558c21d4faf8ba54edd0f3a5d4>${awg3cConfig}
 - name: "Стандартный 3"
   <<: *warp-common
   server: 162.159.192.1
@@ -711,7 +654,7 @@ proxies:
    h3: 3
    h4: 4   
    i1: <b 0x494e56495445207369703a626f624062696c6f78692e636f6d205349502f322e300d0a5669613a205349502f322e302f55445020706333332e61746c616e74612e636f6d3b6272616e63683d7a39684734624b3737366173646864730d0a4d61782d466f7277617264733a2037300d0a546f3a20426f62203c7369703a626f624062696c6f78692e636f6d3e0d0a46726f6d3a20416c696365203c7369703a616c6963654061746c616e74612e636f6d3e3b7461673d313932383330313737340d0a43616c6c2d49443a20613834623463373665363637313040706333332e61746c616e74612e636f6d0d0a435365713a2033313431353920494e564954450d0a436f6e746163743a203c7369703a616c69636540706333332e61746c616e74612e636f6d3e0d0a436f6e74656e742d547970653a206170706c69636174696f6e2f7364700d0a436f6e74656e742d4c656e6774683a20300d0a0d0a>
-   i2: <b 0x5349502f322e302031303020547279696e670d0a5669613a205349502f322e302f55445020706333332e61746c616e74612e636f6d3b6272616e63683d7a39684734624b3737366173646864730d0a546f3a20426f62203c7369703a626f624062696c6f78692e636f6d3e0d0a46726f6d3a20416c696365203c7369703a616c6963654061746c616e74612e636f6d3e3b7461673d313932383330313737340d0a43616c6c2d49443a20613834623463373665363637313040706333332e61746c616e74612e636f6d0d0a435365713a2033313431353920494e564954450d0a436f6e74656e742d4c656e6774683a20300d0a0d0a>
+   i2: <b 0x5349502f322e302031303020547279696e670d0a5669613a205349502f322e302f55445020706333332e61746c616e74612e636f6d3b6272616e63683d7a39684734624b3737366173646864730d0a546f3a20426f62203c7369703a626f624062696c6f78692e636f6d3e0d0a46726f6d3a20416c696365203c7369703a616c6963654061746c616e74612e636f6d3e3b7461673d313932383330313737340d0a43616c6c2d49443a20613834623463373665363637313040706333332e61746c616e74612e636f6d0d0a435365713a2033313431353920494e564954450d0a436f6e74656e742d4c656e6774683a20300d0a0d0a>${awg3cConfig}
 ${msqp}
 ${proxy}    
 ${proxyg}`;
@@ -754,6 +697,43 @@ ClashMASQUE.addEventListener('click', async () => {
 rules:
 - MATCH,WARP`
 		
+	    // --- AWG 3.0 ---
+		const awg3cToggle = document.getElementById('awg3c');
+		let awg3cConfig = '';
+		if (awg3cToggle && awg3cToggle.checked) {
+			const getValue = (id) => {
+				const el = document.getElementById(id);
+				if (!el) return '';
+				const val = el.value.trim() || el.placeholder || '';
+				if (!val || Number(val) === 0) return '';
+				return val;
+			};
+
+    const cpa = getValue('cpaInput');
+    const rkat = getValue('rkatInput');
+    const rt = getValue('rtInput');
+    const rat = getValue('ratInput');
+    const kt = getValue('ktInput');
+    const mha = getValue('mhaInput');
+
+                if (cpa) awg3cConfig += `\n   content-padding-addition: ${cpa}`;
+                if (rkat) awg3cConfig += `\n   rekey-after-time: ${rkat}`;
+                if (rt) awg3cConfig += `\n   rekey-timeout: ${rt}`;
+                if (rat) awg3cConfig += `\n   reject-after-time: ${rat}`;
+                if (kt) awg3cConfig += `\n   keepalive-timeout: ${kt}`;
+                if (mha) awg3cConfig += `\n   max-handshake-attempts: ${mha}`;
+            }
+		
+		// --- AWG 3.1 ---
+const isAwg31 = document.getElementById('awg3_1c')?.checked;
+const isRandomTrailers = document.getElementById('awg3_1_1c')?.checked;
+const isDisableCookies = document.getElementById('awg3_1_2c')?.checked;
+
+if (isAwg31) {
+    if (isRandomTrailers) awg3cConfig += `\n   random-trailers: true`;
+    if (isDisableCookies) awg3cConfig += `\n   disable-cookies: true`;
+}
+		
 		const serversToggle = document.getElementById('servers');
 		if (serversToggle.checked) {
 			const configData = await fetchFullConfig()
@@ -765,7 +745,7 @@ rules:
   public-key: ${configData.peer_pub}
   allowed-ips: ['0.0.0.0/0']
   udp: true
-  mtu: 1280
+  mtu: ${mtuVal}
   remote-dns-resolve: true
   dns: [1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001]
   amnezia-wg-option:
@@ -778,7 +758,7 @@ rules:
    h2: 2
    h3: 3
    h4: 4  
-   i1: <b 0xc800000001018800002b45615e996de27ff5ec5f583061ab38eac69fd8fec356802847cd1c7c15a87402bb0a433d4054defedc066e>
+   i1: <b 0xc800000001018800002b45615e996de27ff5ec5f583061ab38eac69fd8fec356802847cd1c7c15a87402bb0a433d4054defedc066e>${awg3cConfig}
 
 proxies:
 - name: "🇵🇱 PL"
@@ -851,7 +831,7 @@ rules:
   public-key: ${configDataMSQ.peer_pub}
   ip: ${configDataMSQ.client_ipv4}
   ipv6: ${configDataMSQ.client_ipv6}
-  mtu: 1280
+  mtu: ${mtuVal}
   udp: true
   remote-dns-resolve: true
   dns: [1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001]  
@@ -920,14 +900,20 @@ WireSock.addEventListener('click', async () => {
 
         const allowedIPs = getSelectedSites();
         const randomEndpoint = generateRandomEndpoint();
-        const domains = ['apteka.ru', 'psbank.ru', 'lenta.ru', 'www.pochta.ru', 'rzd.ru', 'rutube.ru', 'gosuslugi.ru'];
-        const randomDomain = domains[Math.floor(Math.random() * domains.length)];
+        const customDomainInput = document.getElementById('i1');
+const customDomain = customDomainInput ? customDomainInput.value.trim() : '';
+const domains = ['apteka.ru', 'psbank.ru', 'lenta.ru', 'www.pochta.ru', 'rzd.ru', 'rutube.ru', 'gosuslugi.ru'];
+
+const randomDomain = customDomain || domains[Math.floor(Math.random() * domains.length)];
         
+		const mtuInput = document.getElementById('mtu');
+		const mtuVal = mtuInput?.value.trim() || mtuInput?.placeholder || '1420';
+		
         const wireGuardText = `[Interface]
 PrivateKey = ${configData.privKey}
 Address = ${address}
 DNS = ${dns}
-MTU = 1280
+MTU = ${mtuVal}
 S1 = 0
 S2 = 0
 S3 = 0
@@ -990,11 +976,11 @@ function getSelectedDNS() {
     if (document.getElementById('cf').checked) {
         return "1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001";
     } else if (document.getElementById('malw').checked) {
-        return "84.21.189.133, 193.23.209.189, 2a12:bec4:1460:294::2, 2a01:ecc0:680:120::2";
+        return "95.216.204.218, 80.253.249.40, 2a01:4f9:c014:6dac::1, 2a12:bec4:1460:5b7::2";
     } else if (document.getElementById('xbox').checked) {
         return "111.88.96.50, 111.88.96.51, 2a00:ab00:1233:26::50, 2a00:ab00:1233:26::51";
 	} else if (document.getElementById('geohide').checked) {
-        return "45.155.204.190, 37.230.192.51";
+        return "45.155.204.190, 37.230.192.51, 193.233.112.67, 193.233.112.68";
 	} else if (document.getElementById('comss').checked) {
         return "83.220.169.155, 212.109.195.93, 195.133.25.16, 2a01:230:4:915::2, 2a01:230:4:306::2";
 	} else if (document.getElementById('google').checked) {
@@ -1442,8 +1428,7 @@ i1Input.addEventListener('input', generateQuicMask);
 i1Toggle.addEventListener('change', generateQuicMask);
 document.getElementById('i2').style.display = 'none';
 document.addEventListener('DOMContentLoaded', function() {
-  
-// Блокировка Enter
+
 const textareas = document.querySelectorAll('textarea');
     
     textareas.forEach(textarea => {
@@ -1501,31 +1486,204 @@ function showWarningIfNeeded(callback) {
     }
 }
 
-// MASQUE UI checkbox
-const masqueCheckbox = document.getElementById('masque');
-const wsc = document.getElementById('wiresock');
-const awg = document.getElementById('awg');
-const containerClash = document.querySelector('.containerClash');
-function updateMasqueUI() {
-    const isChecked = masqueCheckbox.checked;
-   
-        if (isChecked) {
-            ClashMASQUE.style.display = 'none';
-			Clash.textContent = 'AWG и MASQUE';
-			containerClash.style.height = '100px';
-			wsc.style.marginTop = '-140px';
-			awg.style.marginTop = '15px';
+
+const awg3Toggle = document.getElementById('awg3');
+const awg3_1Toggle = document.getElementById('awg3_1');
+const musor3 = document.getElementById('musor3');
+const musor4 = document.getElementById('musor4');
+
+if (awg3Toggle && musor3) {
+    awg3Toggle.addEventListener('change', function() {
+        if (this.checked) {
+            musor3.classList.add('show');
         } else {
-            ClashMASQUE.style.display = '';
-			Clash.textContent = 'AWG 2.0';
-			containerClash.style.height = '160px';
-			wsc.style.marginTop = '-96px';
-			awg.style.marginTop = '35px';
+            musor3.classList.remove('show');
         }
+    });
 }
-if (masqueCheckbox) {
-    masqueCheckbox.addEventListener('change', updateMasqueUI);
+
+if (awg3_1Toggle && musor4) {
+    awg3_1Toggle.addEventListener('change', function() {
+        if (this.checked) {
+            musor4.classList.add('show');
+        } else {
+            musor4.classList.remove('show');
+        }
+    });
 }
+
+const awg3cToggle = document.getElementById('awg3c');
+const awg3_1cToggle = document.getElementById('awg3_1c');
+const musor3с = document.getElementById('musor3с');
+const musor4с = document.getElementById('musor4с');
+
+if (awg3cToggle && musor3c) {
+    awg3cToggle.addEventListener('change', function() {
+        if (this.checked) {
+            musor3c.classList.add('show');
+        } else {
+            musor3c.classList.remove('show');
+        }
+    });
+}
+
+if (awg3_1cToggle && musor4c) {
+    awg3_1cToggle.addEventListener('change', function() {
+        if (this.checked) {
+            musor4c.classList.add('show');
+        } else {
+            musor4c.classList.remove('show');
+        }
+    });
+}
+
+// Сброс всех элементов управления при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
+    const rulesToggle = document.getElementById('rules');
+    const keepToggle = document.getElementById('keeptogggle');
+    const keepaliveContainer = document.querySelector('.keepalive-container');
+    const i1Toggle = document.getElementById('i1toggle');
+    const i1textarea = document.querySelector('.i1');
+    const i2area = document.getElementById('i2');
+    const keepaliveInput = document.getElementById('keepalive');
+    const i1Input = document.getElementById('i1');
+    const ipv6Toggle = document.getElementById('ipv6');
+    const awg3_1_1 = document.getElementById('awg3_1_1');
+    const awg3_1_2 = document.getElementById('awg3_1_2');
+	const awg3_1_1с = document.getElementById('awg3_1_1');
+    const awg3_1_2с = document.getElementById('awg3_1_2');
+	const awg3Inputs = ['cpaInput', 'mhaInput', 'ktInput', 'ratInput', 'rkatInput', 'rtInput'];
+    const awg3cToggle = document.getElementById('awg3c');
+    const awg3_1cToggle = document.getElementById('awg3_1c');
+	
+	document.querySelectorAll('[id="mtu"]').forEach(input => {
+        input.value = '';
+    });
+	
+		rulesToggle.checked = false;
+        rulesToggle.disabled = false;
+        keepToggle.checked = false;
+        keepaliveContainer.classList.remove('visible');
+        i1Toggle.checked = false;
+        i1textarea.classList.remove('visible');
+        i2area.style.display = 'none';
+        i2area.value = '';
+        keepaliveInput.value = '';
+        i1Input.value = '';
+        ipv6Toggle.checked = true;
+        awg3Toggle.checked = false;
+		awg3cToggle.checked = false;
+        awg3_1Toggle.checked = false;
+		awg3_1cToggle.checked = false;
+        awg3_1_1.checked = true;
+        awg3_1_2.checked = true; 
+		awg3_1_1c.checked = true;
+        awg3_1_2c.checked = true; 
+
+   awg3Inputs.forEach(id => {
+        document.querySelectorAll(`[id="${id}"]`).forEach(input => {
+            input.value = '';
+        });
+    });
+   
+});
+
+// Случайно AWG 3.0
+function randomizeAwg3() {
+    const getRandomRange = (minLow, minHigh, maxLow, maxHigh) => {
+        const min = Math.floor(Math.random() * (minHigh - minLow + 1)) + minLow;
+        const max = Math.floor(Math.random() * (maxHigh - maxLow + 1)) + maxLow;
+        return `${min}-${max}`;
+    };
+
+    const updateInputs = (id, minLow, minHigh, maxLow, maxHigh) => {
+        const elements = document.querySelectorAll(`[id="${id}"]`);
+        elements.forEach(el => {
+            el.value = getRandomRange(minLow, minHigh, maxLow, maxHigh);
+        });
+    };
+
+    updateInputs('cpaInput', 5, 49, 50, 110);
+    updateInputs('mhaInput', 5, 24, 25, 40);
+    updateInputs('ktInput', 5, 10, 11, 25);
+    updateInputs('ratInput', 50, 99, 100, 200);
+    updateInputs('rkatInput', 50, 99, 100, 150);
+    updateInputs('rtInput', 3, 9, 10, 15);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. Логика для кнопок 1, 2, 3 (Основной блок AWG) ---
+    const awg3 = document.getElementById('awg3');
+    const awg3_1 = document.getElementById('awg3_1');
+
+    const btn1Text = document.querySelector('#generateButton1 .button__text');
+    const btn2Text = document.querySelector('#generateButton2 .button__text');
+    const btn3Text = document.querySelector('#generateButton3 .button__text');
+
+    function updateAWGMain() {
+        let version = '2.0';
+
+        if (awg3_1 && awg3_1.checked) {
+            version = '3.1';
+        } else if (awg3 && awg3.checked) {
+            version = '3.0';
+        }
+
+        if (btn1Text) btn1Text.textContent = `AWG ${version} (1 вариант)`;
+        if (btn2Text) btn2Text.textContent = `AWG ${version} (2 вариант)`;
+        if (btn3Text) btn3Text.textContent = `AWG ${version} (3 вариант)`;
+    }
+
+    if (awg3) awg3.addEventListener('change', updateAWGMain);
+    if (awg3_1) awg3_1.addEventListener('change', updateAWGMain);
+
+
+    // --- 2. Логика для Clash (Кнопка 4) и MASQUE UI ---
+    const masqueCheckbox = document.getElementById('masque');
+    const awg3c = document.getElementById('awg3c');
+    const awg3_1c = document.getElementById('awg3_1c');
+
+    const wsc = document.getElementById('wiresock');
+    const awg = document.getElementById('awg');
+    const containerClash = document.querySelector('.containerClash');
+    
+    // Элементы Clash
+    const ClashMASQUE = document.getElementById('generateButton6');
+    const Clash = document.querySelector('#generateButton4 .button__text');
+
+    // Функция вычисления текущей версии для Clash
+    function getClashVersion() {
+        if (awg3_1c && awg3_1c.checked) return '3.1';
+        if (awg3c && awg3c.checked) return '3.0';
+        return '2.0';
+    }
+
+    // Обновленная функция MASQUE UI
+    function updateMasqueUI() {
+        const isChecked = masqueCheckbox ? masqueCheckbox.checked : false;
+
+        if (isChecked) {
+            if (ClashMASQUE) ClashMASQUE.style.display = 'none';
+            if (Clash) Clash.textContent = 'AWG и MASQUE';
+            if (containerClash) containerClash.style.height = '100px';
+            if (wsc) wsc.style.marginTop = '-140px';
+            if (awg) awg.style.marginTop = '15px';
+        } else {
+            if (ClashMASQUE) ClashMASQUE.style.display = '';
+            // Подставляем динамическую версию вместо жестко прописанного 'AWG 2.0'
+            if (Clash) Clash.textContent = `AWG ${getClashVersion()}`;
+            if (containerClash) containerClash.style.height = '160px';
+            if (wsc) wsc.style.marginTop = '-96px';
+            if (awg) awg.style.marginTop = '35px';
+        }
+    }
+
+    // Подключаем слушатели событий
+    if (masqueCheckbox) masqueCheckbox.addEventListener('change', updateMasqueUI);
+    if (awg3c) awg3c.addEventListener('change', updateMasqueUI);
+    if (awg3_1c) awg3_1c.addEventListener('change', updateMasqueUI);
+
+    // Первичная инициализация
+    updateAWGMain();
     updateMasqueUI();
 });
