@@ -2,11 +2,7 @@
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
-
-  width: 100%;
-
-
-
+  width: 90%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -638,14 +634,12 @@ textarea{
 .options {
     max-height: 0;
     opacity: 0;
-    transition: max-height 0.4s ease-out, margin 0.3s ease-out;
     margin-top: 0;
 }
 
 .options.show {
-    max-height: 150px;
+    max-height: 100%;
     opacity: 1;
-	transition: max-height 0.2s ease-out, opacity 0.5s ease-out, margin 0.3s ease-out;
     margin-top: 10px;
 }
 
@@ -660,6 +654,10 @@ textarea{
 	background-color: #F4F4F4;
 }
 .i2:focus { outline: none }
+.jc {max-width:50px;text-align: center;}
+#musor3, #musor4 {display: none}
+#musor3.show, #musor4.show, #musor4c.show, #musor3c.show {display: block}
+#musor3c, #musor4c {display: none}
 
 @media (max-width: 700px) {
 	.i1 {
@@ -682,7 +680,6 @@ textarea{
 	}
 	
 	#optionsName {display: block ruby}
-	.options.show {max-height: 200px}
 	.toggle-label {padding-right: 0}
 	#wiresock {display:none}
 	#logo {max-width: 90%}   
@@ -692,6 +689,7 @@ textarea{
 	.dnsinfo {grid-template-columns: repeat(2, minmax(0, 1fr))}
 	.grid-container {grid-template-columns: 1fr}
 	.containerClash {order: 3}
+	#musor3div {grid-template-columns: repeat(1, 1fr) !important}
 }
 		
 @media (max-width: 350px) {
@@ -710,6 +708,10 @@ textarea{
         grid-auto-columns: 100%;
 	}
 	
-
+    .modal-content {width:initial;
+	margin: initial;
+	border-radius: initial;
+	}
+	
 	.info-button {left: 37px;}
 }
