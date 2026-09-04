@@ -107,7 +107,7 @@
     <input id="xbox" type="radio" name="payment" class="payment-radio" />
   </label>
     <label class="payment-option">
-    <div class="payment-option-content">dns.geohide.ru</div>
+    <div class="payment-option-content">geohide.ru</div>
     <input id="geohide" type="radio" name="payment" class="payment-radio" />
   </label>
     <label class="payment-option">
@@ -270,6 +270,11 @@
 	<div class="modal-line" style="justify-content: normal" id="optionsName"><span style="cursor: pointer;" id="optionsToggle">
 	Дополнительные настройки <svg id="optionsArrow" width="20" height="20" viewBox="0 0 16 17" style="margin-left: 5px; margin-bottom: -4px; transition: transform 0.3s ease;" fill="none"> <path d="M1.49691 5.4902L2.20391 4.7832L8.00041 10.5797L13.7969 4.7832L14.5039 5.4902L8.00041 11.994L1.49691 5.4902Z" fill="#FF6633"></path></svg></span></div>
 		<div class="options" id="optionsDiv">
+			
+			<div style="margin-left: 10px;">
+			<span>MTU =</span>
+			<textarea id="mtu" class="jc" rows="1" maxlength="4" type="number" placeholder="1420" style="margin: 0; position: relative; top: 2px; max-width: 30px;"></textarea></div>
+			
 			<label class="toggle">
 				<input class="toggle-checkbox" type="checkbox" id="ipv6" checked>
 				<div class="toggle-switch"></div>
@@ -286,6 +291,50 @@
 				<span class="toggle-label">Собственный I1<textarea spellcheck="false" id="i1" class="i1" rows="1" placeholder="Введите домен"></textarea></span>
 			</label>
 			<textarea spellcheck="false" id="i2" class="i2" wrap="off" readonly></textarea>
+			
+			<label class="toggle" style="display:table">
+              <input type="checkbox" id="awg3" class="toggle-checkbox">
+              <div class="toggle-switch"></div>
+              <span class="toggle-label">AWG 3.0</span>
+            </label>
+            <div id="musor3">
+    <div id="musor3div" style="display: grid; grid-template-columns: repeat(2, 1fr); line-height: 24px; text-align: center; margin-top: 5px;">
+        <div>
+            <div>ContentPaddingAddition = <textarea id="cpaInput" class="jc" rows="1" maxlength="7" placeholder="27-97"></textarea></div>
+            <div>MaxHandshakeAttempts = <textarea id="mhaInput" class="jc" rows="1" maxlength="7" placeholder="18-26"></textarea></div>
+            <div>KeepaliveTimeout = <textarea id="ktInput" class="jc" rows="1" maxlength="7" placeholder="9-16"></textarea></div>
+        </div>
+        <div>
+            <div>RejectAfterTime = <textarea id="ratInput" class="jc" rows="1" maxlength="7" placeholder="171-196"></textarea></div>
+            <div>RekeyAfterTime = <textarea id="rkatInput" class="jc" rows="1" maxlength="7" placeholder="116-131"></textarea></div>
+            <div>RekeyTimeout = <textarea id="rtInput" class="jc" rows="1" maxlength="7" placeholder="6-9"></textarea></div>
+        </div>
+    </div>
+    <button onclick="randomizeAwg3()" class="randombtn" style="width: fit-content; background: linear-gradient(90deg, #2a3797, #0d87d2); margin: 10px auto; display: block;">Случайно</button>
+</div>
+						
+			<div style= "padding-top: 0px;"></div>
+						
+			<label class="toggle">
+              <input type="checkbox" id="awg3_1" class="toggle-checkbox">
+              <div class="toggle-switch"></div>
+              <span class="toggle-label">AWG 3.1</span>
+            </label>
+            <div id="musor4">
+				<div id="musor4div" style="display: grid; justify-items: center">
+					<label class="toggle">
+						<input type="checkbox" id="awg3_1_1" class="toggle-checkbox" checked>
+						<div class="toggle-switch"></div>
+						<span class="toggle-label">Random trailers</span>
+					</label>
+					<label class="toggle">
+						<input type="checkbox" id="awg3_1_2" class="toggle-checkbox" checked>
+						<div class="toggle-switch"></div>
+						<span class="toggle-label">Disable cookies</span>
+					</label>
+				</div>
+			</div>
+
 		</div>
     </div>
 </div>
@@ -305,6 +354,54 @@
 				<div class="toggle-switch"></div>
 				<span class="toggle-label">Совместить MASQUE и AWG</span>
 			</label>
+			
+			<div style="margin-left: 10px; margin-top: 30px;">
+			<span>MTU =</span>
+			<textarea id="mtu" class="jc" rows="1" maxlength="4" type="number" placeholder="1420" style="margin: 0; position: relative; top: 2px; max-width: 30px;"></textarea></div>
+			
+			<label class="toggle" style="display:table">
+              <input type="checkbox" id="awg3c" class="toggle-checkbox">
+              <div class="toggle-switch"></div>
+              <span class="toggle-label">AWG 3.0</span>
+            </label>
+            <div id="musor3c">
+    <div id="musor3div" style="display: grid; grid-template-columns: repeat(2, 1fr); line-height: 24px; text-align: center; margin-top: 5px;">
+        <div>
+            <div>ContentPaddingAddition = <textarea id="cpaInput" class="jc" rows="1" maxlength="7" placeholder="27-97"></textarea></div>
+            <div>MaxHandshakeAttempts = <textarea id="mhaInput" class="jc" rows="1" maxlength="7" placeholder="18-26"></textarea></div>
+            <div>KeepaliveTimeout = <textarea id="ktInput" class="jc" rows="1" maxlength="7" placeholder="9-16"></textarea></div>
+        </div>
+        <div>
+            <div>RejectAfterTime = <textarea id="ratInput" class="jc" rows="1" maxlength="7" placeholder="171-196"></textarea></div>
+            <div>RekeyAfterTime = <textarea id="rkatInput" class="jc" rows="1" maxlength="7" placeholder="116-131"></textarea></div>
+            <div>RekeyTimeout = <textarea id="rtInput" class="jc" rows="1" maxlength="7" placeholder="6-9"></textarea></div>
+        </div>
+    </div>
+    <button onclick="randomizeAwg3()" class="randombtn" style="width: fit-content; background: linear-gradient(90deg, #2a3797, #0d87d2); margin: 10px auto; display: block;">Случайно</button>
+</div>
+						
+			<div style= "padding-top: 0px;"></div>
+						
+			<label class="toggle">
+              <input type="checkbox" id="awg3_1c" class="toggle-checkbox">
+              <div class="toggle-switch"></div>
+              <span class="toggle-label">AWG 3.1</span>
+            </label>
+            <div id="musor4c">
+				<div id="musor4div" style="display: grid; justify-items: center">
+					<label class="toggle">
+						<input type="checkbox" id="awg3_1_1c" class="toggle-checkbox" checked>
+						<div class="toggle-switch"></div>
+						<span class="toggle-label">Random trailers</span>
+					</label>
+					<label class="toggle">
+						<input type="checkbox" id="awg3_1_2c" class="toggle-checkbox" checked>
+						<div class="toggle-switch"></div>
+						<span class="toggle-label">Disable cookies</span>
+					</label>
+				</div>
+			</div>
+			
     </div>
 </div>
 
