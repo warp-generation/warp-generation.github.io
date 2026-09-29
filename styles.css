@@ -132,6 +132,9 @@ body {
     margin: 0 auto; 
 }
 
+.containerClash {margin-top: 30px;}
+#xray {margin-top: -30px;}
+
 #clash {margin-bottom: 10px;}
 .header {
     display: flex;
@@ -198,7 +201,7 @@ button.button--loading {
 
 .button--loading .button__text {display: none;}
 #generateButton1,#generateButton2, #generateButton4 {background: linear-gradient(90deg, #eeac43, #f15874);}
-#generateButton3,#generateButton5,#generateButton6 {
+#generateButton3,#generateButton5,#generateButton6,#generateButton7 {
 	background: linear-gradient(90deg, #eeac43, #f15874);
 	margin-bottom: 6px;
 }
@@ -519,8 +522,8 @@ label,
     background-color: rgba(0,0,0,0.4);
 }
 
-#wiresock {margin-top: -96px;grid-column: 2;}
-#awg {margin-top: 35px;}
+#wiresock {}
+
 .toggle {
 	display: inline-block;
 	padding-top: 5px;
@@ -688,7 +691,8 @@ textarea{
 	.Sites {grid-template-columns: repeat(2, minmax(0, 1fr))}
 	.dnsinfo {grid-template-columns: repeat(2, minmax(0, 1fr))}
 	.grid-container {grid-template-columns: 1fr}
-	.containerClash {order: 3}
+	.containerClash {order: 3; margin-top: 0 !important}
+	#xray {margin-top: 0 !important}
 	#musor3div {grid-template-columns: repeat(1, 1fr) !important}
 }
 		
