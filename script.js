@@ -4,6 +4,7 @@ const AWGm3 = document.getElementById('generateButton3');
 const Clash = document.getElementById('generateButton4');
 const WireSock = document.getElementById('generateButton5');
 const ClashMASQUE = document.getElementById('generateButton6');
+const Xray = document.getElementById('generateButton7');
 const container = document.querySelector('.container');
 
 function generateRandomEndpoint() {
@@ -65,6 +66,21 @@ function generateRandomEndpoint() {
     const endpoint = serverMap[selectedServer] || 'pl.tribukvy.ltd';
     return `${endpoint}:${port}`;
 }
+
+function getSelectedDNS() {
+	if (document.getElementById('cf').checked) {
+		return "1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001";
+	} else if (document.getElementById('malw').checked) {
+		return "95.216.204.218, 80.253.249.40, 2a01:4f9:c014:6dac::1, 2a12:bec4:1460:5b7::2";
+	} else if (document.getElementById('xbox').checked) {
+		return "111.88.96.54, 111.88.96.55, 2a00:ab00:1233:26::50, 2a00:ab00:1233:26::51";
+	} else if (document.getElementById('geohide').checked) {
+		return "193.233.112.67, 193.233.112.68, 193.233.112.88, 45.155.204.190, 37.230.192.51, 46.8.158.6";
+	} else if (document.getElementById('comss').checked) {
+		return "83.220.169.155, 212.109.195.93, 195.133.25.16, 2a01:230:4:915::2, 2a01:230:4:306::2";
+	} else if (document.getElementById('google').checked) {
+		return "8.8.8.8, 8.8.4.4, 2001:4860:4860::8888, 2001:4860:4860::8844";
+	}}
 
 function getSelectedServer() {
     const serverRadios = document.getElementsByName('server');
@@ -1200,6 +1216,212 @@ Endpoint = ${randomEndpoint}${persistentKeepalive}`;
 });
 });
 
+// Xray
+Xray.addEventListener('click', async () => {
+    const button = document.getElementById('generateButton7');
+    const status = document.getElementById('status');
+    const randomNumber = Math.floor(Math.random() * (99 - 10 + 1)) + 10;
+    button.disabled = true;
+    button.classList.add("button--loading");
+    try {
+		const options = ['ca000000010192000040523d20151ea578688a48502d1b7d5ae46906ceb14547fec9aee98a407dab61b229ca5f6707be89c159f3cf9b73a3b8d906f7d3e307f8e39fdb0d35b23c0ffc635d285418cea8bfd98009d234e0e4f95891a7f4', 'c400000001015c000040570b2e25e1a2fb2e1d5cf2bfdaeb0ca79c3255f6384628e6e6c22adb43440db63fa1d26ad16120d9cbdbf0dc2f7a8eb3525561b193c6b6a0ef44e8d118c3b04a3ae880c081a9b9e97321315915787938abd8b925506b830d', 'cb0000000101d6000040500195593d5d325e28e7a9d879ff474b9a1a344d76a202d92776ceaee0e7f8d933ded8bc2f49a31d19cfa2f42a8b6e056c76c4d64b4f09d870f342e0872e69f5486b4e35e32314107a3937b8d3cf14cfc8', 'ce0000000101a400004056160e0ac66b428015297d5e103316b68a89058b61bd795b8cdfd9e6f10e28626e7a4cdf5439f6f67a3b29b4a72361b99cd77343bcb2de18370bdb40b930b3720f46ac48c1833eea55caf480f801f7cbf2694c9860cb6b', 'c70000000101ee00004052dce5fd8b7962ba5c6a03d50565ac10d5cf625b0504d3dd5fc9d3e1e620bb4fd278dd951bb491a144244d01fd9decd226554690447e87773fb6e5212d09e8a5aa2cd9a2a3e25325b5b81264b0a2c315594e05'];
+		const configData = await fetchFullConfig();
+		const prefix = getConfigPrefix();
+		const ipv6Toggle = document.getElementById('ipv6');
+		const i1Toggle = document.getElementById('i1toggle');
+        const i2area = document.getElementById('i2');
+        let i1Value = options[Math.floor(Math.random() * options.length)];
+		if (i1Toggle.checked && i2area.value.trim()) {
+			i1Value = i2area.value.trim();
+			const match = i1Value.match(/0x([0-9a-fA-F]+)/);
+			i1Value = match ? match[1] : '';
+        }
+		let ipv6 = '';
+		let ipv6a = '';
+		let dnsList = getSelectedDNS()
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+
+if (!ipv6Toggle.checked) {
+    dnsList = dnsList.filter(ip => !ip.includes(':'));
+} else { 
+	ipv6 = `,\n                    "${configData.client_ipv6}/128"`;
+	ipv6a =  `,\n                            "::/0"`;
+}
+	dnsServers = dnsList
+    .map(s => `            "${s}"`)
+    .join(',\n');
+	
+		
+		const randomEndpoint = generateRandomEndpoint();
+		const keepToggle = document.getElementById('keeptogggle');
+		const keepaliveInput = document.getElementById('keepalive');
+		const mtuInput = document.getElementById('mtu');
+		const mtuVal = mtuInput?.value.trim() || mtuInput?.placeholder || '1280';
+		let persistentKeepalive = '';
+		if (keepToggle.checked) {
+			let keepaliveValue = keepaliveInput ? keepaliveInput.value.trim() : '';
+			if (keepaliveValue && /^\d+$/.test(keepaliveValue)) {
+				persistentKeepalive = `\n                        "keepAlive": ${keepaliveValue}`;
+			} else if (keepaliveValue === '') {
+				persistentKeepalive = `\n                        "keepAlive": 25,`;
+			}
+		}
+
+		const wireGuardText = `{
+    "dns": {
+        "servers": [
+${dnsServers}
+        ]
+    },
+    "inbounds": [
+        {
+            "listen": "127.0.0.1",
+            "port": 10808,
+            "protocol": "socks",
+            "settings": {
+                "auth": "noauth",
+                "udp": true
+            },
+            "sniffing": {
+                "destOverride": [
+                    "http",
+                    "tls"
+                ],
+                "enabled": true
+            },
+            "tag": "socks-in"
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 10809,
+            "protocol": "http",
+            "settings": {
+            },
+             "sniffing": {
+                "destOverride": [
+                    "http",
+                    "tls"
+                ],
+                "enabled": true
+            },
+            "tag": "http-in"
+        }
+    ],
+    "log": {
+        "loglevel": "warning"
+    },
+    "meta": null,
+    "outbounds": [
+        {
+            "protocol": "wireguard",
+            "settings": {
+                "address": [
+                    "${configData.client_ipv4}/32"${ipv6}
+                ],
+                "mtu": ${mtuVal},
+                "peers": [
+                    {
+                        "allowedIPs": [
+                            "0.0.0.0/0"${ipv6a}
+                        ],
+                        "endpoint": "${randomEndpoint}",${persistentKeepalive}
+                        "publicKey": "${configData.peer_pub}"
+                    }
+                ],
+                "secretKey": "${configData.privKey}"
+            },
+            "streamSettings": {
+                "sockopt": {
+                    "dialerProxy": "noise-out"
+                }
+            },
+            "tag": "warp"
+        },
+        {
+            "protocol": "freedom",
+            "settings": {
+                "domainStrategy": "AsIs",
+                "noises": [
+                    {
+                        "delay": "1-2",
+                        "packet": "${i1Value}",
+                        "type": "hex"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "23-911",
+                        "type": "rand"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "23-911",
+                        "type": "rand"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "23-911",
+                        "type": "rand"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "23-911",
+                        "type": "rand"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "23-911",
+                        "type": "rand"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "23-911",
+                        "type": "rand"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "23-911",
+                        "type": "rand"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "23-911",
+                        "type": "rand"
+                    }
+                ]
+            },
+            "tag": "noise-out"
+        }
+    ],
+    "remarks": "${prefix}WARP",
+    "routing": {
+        "domainStrategy": "AsIs",
+        "rules": [
+            {
+                "network": "tcp,udp",
+                "outboundTag": "warp",
+                "type": "field"
+            }
+        ]
+    }
+}`;
+        const content = wireGuardText || "No configuration available";
+    if (content === "No configuration available") {
+        showPopup('No configuration to download', 'Ошибка');
+        return;
+    }
+    downloadConfig(`XrayWARP_${randomNumber}.json`, content);
+    showPopup('Скачивание конфигурации');
+    } catch (error) {
+        console.error('Error processing configuration:', error);
+showPopup('Ошибка. Подождите несколько минут или воспользуйтесь <a href="https://generator-config-warp.vercel.app/" target="_blank" style="color: #fff; text-decoration: underline; font-weight: bold;">зеркалом</a>', 'error');
+    } finally {
+        button.disabled = false;
+        button.classList.remove("button--loading");
+    } 
+});
+
 document.getElementById('telegramButton').onclick = function() {
     window.location.href = 'https://t.me/warp_1_1_1_1';
 }
@@ -1216,20 +1438,6 @@ document.getElementById('promoButton').onclick = function() {
     window.location.href = 'https://storage.googleapis.com/amnezia/amnezia.org?m-path=premium&arf=VG755WBZDBAPGGYM';
 }
 
-function getSelectedDNS() {
-	if (document.getElementById('cf').checked) {
-		return "1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001";
-	} else if (document.getElementById('malw').checked) {
-		return "95.216.204.218, 80.253.249.40, 2a01:4f9:c014:6dac::1, 2a12:bec4:1460:5b7::2";
-	} else if (document.getElementById('xbox').checked) {
-		return "111.88.96.54, 111.88.96.55, 2a00:ab00:1233:26::50, 2a00:ab00:1233:26::51";
-	} else if (document.getElementById('geohide').checked) {
-		return "193.233.112.67, 193.233.112.68, 193.233.112.88, 45.155.204.190, 37.230.192.51, 46.8.158.6";
-	} else if (document.getElementById('comss').checked) {
-		return "83.220.169.155, 212.109.195.93, 195.133.25.16, 2a01:230:4:915::2, 2a01:230:4:306::2";
-	} else if (document.getElementById('google').checked) {
-		return "8.8.8.8, 8.8.4.4, 2001:4860:4860::8888, 2001:4860:4860::8844";	
-	}}
 
 function getSelectedSites() {
 	
@@ -1271,12 +1479,15 @@ function getSelectedSites() {
 const modal = document.getElementById("infoModal");
 const modal2 = document.getElementById("infoModal2");
 const modalw = document.getElementById("warning");
+const awg3hid = document.getElementById("awg3hid");
+const splithid = document.getElementById("splithid");
 const infoBtn = document.getElementById("infoButton");
 const infoBtn2 = document.getElementById("infoButton2");
 const infoBtn3 = document.getElementById("infoButton3");
+const infoBtn4 = document.getElementById("infoButton4");
 const span = document.getElementsByClassName("close")[0];
 const span2 = document.getElementsByClassName("close")[1];
-const span3 = document.getElementsByClassName("close")[2];
+
 
 function lockBodyScroll() {
     document.body.style.overflow = 'hidden';
@@ -1287,8 +1498,11 @@ function unlockBodyScroll() {
     document.body.style.overflow = '';
 }
 
+
 // Функция для открытия модального окна
 function openModal() {
+	awg3hid.style.display = "block";
+	splithid.style.display = "block";
     modal.style.display = "block";
     lockBodyScroll(); 
 }
@@ -1298,23 +1512,22 @@ function openModal2() {
     lockBodyScroll(); 
 }
 
-function openModal3() {
-    modalw.style.display = "block";
+function openModal4() {
+	awg3hid.style.display = "none";
+	splithid.style.display = "none";
+    modal.style.display = "block";
     lockBodyScroll(); 
 }
 
 // AmneziaWG
 infoBtn.onclick = openModal;
-
 // WireSock
-if (infoBtn2) {
-    infoBtn2.onclick = openModal;
-}
-
+infoBtn2.onclick = openModal;
 // Clash
-if (infoBtn3) {
-    infoBtn3.onclick = openModal2;
-}
+infoBtn3.onclick = openModal2;
+// Xray
+infoBtn4.onclick = openModal4;
+
 
 // Закрытие по клику на крестики
 span.onclick = function() {
@@ -1325,11 +1538,6 @@ span.onclick = function() {
 span2.onclick = function() {
 	modal2.style.display = "none";
     unlockBodyScroll(); 
-}
-	
-span3.onclick = function() {
-	modalw.style.display = "none";
-    unlockBodyScroll(); 	
 }
 
 // Закрытие по клику вне модального окна
@@ -1343,11 +1551,6 @@ window.onclick = function(event) {
 		modal2.style.display = "none";
         unlockBodyScroll();
     };
-	
-	if (event.target == modalw) {
-		modalw.style.display = "none";
-        unlockBodyScroll();
-    }
 }
 
 // Функция для проверки выбранных сайтов и управления toggle
@@ -1548,7 +1751,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-  const textarea = document.getElementById('keepalive');
+const textarea = document.getElementById('keepalive');
   textarea.addEventListener('input', function(e) {
     this.value = this.value.replace(/\D/g, '');
   });
@@ -1627,6 +1830,7 @@ textarea1.addEventListener('input', function () {
   this.style.height = 'auto'; // Сброс для уменьшения при удалении текста
   this.style.height = (this.scrollHeight) + 'px'; // Установка высоты по контенту
 });
+
 
 // ========== QUIC генератор ==========
 async function generateQuicMask() {
@@ -1785,11 +1989,14 @@ if (awg3_1cToggle && musor4c) {
 document.addEventListener('DOMContentLoaded', function() {
     const rulesToggle = document.getElementById('rules');
     const keepToggle = document.getElementById('keeptogggle');
+
     const keepaliveContainer = document.querySelector('.keepalive-container');
+
     const i1Toggle = document.getElementById('i1toggle');
     const i1textarea = document.querySelector('.i1');
     const i2area = document.getElementById('i2');
     const keepaliveInput = document.getElementById('keepalive');
+
     const i1Input = document.getElementById('i1');
     const ipv6Toggle = document.getElementById('ipv6');
     const awg3_1_1 = document.getElementById('awg3_1_1');
@@ -1807,12 +2014,15 @@ document.addEventListener('DOMContentLoaded', function() {
 		rulesToggle.checked = false;
         rulesToggle.disabled = false;
         keepToggle.checked = false;
+
         keepaliveContainer.classList.remove('visible');
+
         i1Toggle.checked = false;
         i1textarea.classList.remove('visible');
         i2area.style.display = 'none';
         i2area.value = '';
         keepaliveInput.value = '';
+
         i1Input.value = '';
         ipv6Toggle.checked = true;
         awg3Toggle.checked = false;
@@ -1887,7 +2097,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const awg3c = document.getElementById('awg3c');
     const awg3_1c = document.getElementById('awg3_1c');
 
-    const wsc = document.getElementById('wiresock');
+    const xray = document.getElementById('xray');
     const awg = document.getElementById('awg');
     const containerClash = document.querySelector('.containerClash');
     
@@ -1910,14 +2120,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (ClashMASQUE) ClashMASQUE.style.display = 'none';
             if (Clash) Clash.textContent = 'AWG и MASQUE';
             if (containerClash) containerClash.style.height = '100px';
-            if (wsc) wsc.style.marginTop = '-140px';
-            if (awg) awg.style.marginTop = '15px';
+            if (xray) xray.style.marginTop = '-60px';
+            if (containerClash) containerClash.style.marginTop = '60px';
         } else {
             if (ClashMASQUE) ClashMASQUE.style.display = '';
             if (Clash) Clash.textContent = `AWG ${getClashVersion()}`;
             if (containerClash) containerClash.style.height = '160px';
-            if (wsc) wsc.style.marginTop = '-96px';
-            if (awg) awg.style.marginTop = '35px';
+            if (xray) xray.style.marginTop = '-30px';
+            if (containerClash) containerClash.style.marginTop = '30px';
         }
     }
 
