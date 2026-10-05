@@ -1351,42 +1351,22 @@ ${dnsServers}
                     },
                     {
                         "delay": "1-3",
-                        "packet": "23-911",
+                        "packet": "40-70",
                         "type": "rand"
                     },
                     {
                         "delay": "1-3",
-                        "packet": "23-911",
+                        "packet": "40-70",
                         "type": "rand"
                     },
                     {
                         "delay": "1-3",
-                        "packet": "23-911",
+                        "packet": "40-70",
                         "type": "rand"
                     },
                     {
                         "delay": "1-3",
-                        "packet": "23-911",
-                        "type": "rand"
-                    },
-                    {
-                        "delay": "1-3",
-                        "packet": "23-911",
-                        "type": "rand"
-                    },
-                    {
-                        "delay": "1-3",
-                        "packet": "23-911",
-                        "type": "rand"
-                    },
-                    {
-                        "delay": "1-3",
-                        "packet": "23-911",
-                        "type": "rand"
-                    },
-                    {
-                        "delay": "1-3",
-                        "packet": "23-911",
+                        "packet": "40-70",
                         "type": "rand"
                     }
                 ]
@@ -1987,59 +1967,50 @@ if (awg3_1cToggle && musor4c) {
 
 // Сброс всех элементов управления при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    const rulesToggle = document.getElementById('rules');
-    const keepToggle = document.getElementById('keeptogggle');
-
-    const keepaliveContainer = document.querySelector('.keepalive-container');
-
-    const i1Toggle = document.getElementById('i1toggle');
-    const i1textarea = document.querySelector('.i1');
-    const i2area = document.getElementById('i2');
-    const keepaliveInput = document.getElementById('keepalive');
-
-    const i1Input = document.getElementById('i1');
-    const ipv6Toggle = document.getElementById('ipv6');
-    const awg3_1_1 = document.getElementById('awg3_1_1');
-    const awg3_1_2 = document.getElementById('awg3_1_2');
+	const rulesToggle = document.getElementById('rules');
+	const keepToggle = document.getElementById('keeptogggle');
+	const keepaliveContainer = document.querySelector('.keepalive-container');
+	const i1Toggle = document.getElementById('i1toggle');
+	const i1textarea = document.querySelector('.i1');
+	const i2area = document.getElementById('i2');
+	const keepaliveInput = document.getElementById('keepalive');
+	const i1Input = document.getElementById('i1');
+	const ipv6Toggle = document.getElementById('ipv6');
+	const awg3_1_1 = document.getElementById('awg3_1_1');
+	const awg3_1_2 = document.getElementById('awg3_1_2');
 	const awg3_1_1с = document.getElementById('awg3_1_1');
-    const awg3_1_2с = document.getElementById('awg3_1_2');
+	const awg3_1_2с = document.getElementById('awg3_1_2');
 	const awg3Inputs = ['cpaInput', 'mhaInput', 'ktInput', 'ratInput', 'rkatInput', 'rtInput'];
-    const awg3cToggle = document.getElementById('awg3c');
-    const awg3_1cToggle = document.getElementById('awg3_1c');
+	const awg3cToggle = document.getElementById('awg3c');
+	const awg3_1cToggle = document.getElementById('awg3_1c');
 	
 	document.querySelectorAll('[id="mtu"]').forEach(input => {
-        input.value = '';
-    });
-	
-		rulesToggle.checked = false;
-        rulesToggle.disabled = false;
-        keepToggle.checked = false;
-
-        keepaliveContainer.classList.remove('visible');
-
-        i1Toggle.checked = false;
-        i1textarea.classList.remove('visible');
-        i2area.style.display = 'none';
-        i2area.value = '';
-        keepaliveInput.value = '';
-
-        i1Input.value = '';
-        ipv6Toggle.checked = true;
-        awg3Toggle.checked = false;
-		awg3cToggle.checked = false;
-        awg3_1Toggle.checked = false;
-		awg3_1cToggle.checked = false;
-        awg3_1_1.checked = true;
-        awg3_1_2.checked = true; 
-		awg3_1_1c.checked = true;
-        awg3_1_2c.checked = true; 
-
-   awg3Inputs.forEach(id => {
-        document.querySelectorAll(`[id="${id}"]`).forEach(input => {
+		input.value = '';
+	});
+	rulesToggle.checked = false;
+	rulesToggle.disabled = false;
+	keepToggle.checked = false;
+	keepaliveContainer.classList.remove('visible');
+	i1Toggle.checked = false;
+	i1textarea.classList.remove('visible');
+	i2area.style.display = 'none';
+	i2area.value = '';
+	keepaliveInput.value = '';
+	i1Input.value = '';
+	ipv6Toggle.checked = true;
+	awg3Toggle.checked = false;
+	awg3cToggle.checked = false;
+	awg3_1Toggle.checked = false;
+	awg3_1cToggle.checked = false;
+	awg3_1_1.checked = true;
+	awg3_1_2.checked = true; 
+	awg3_1_1c.checked = true;
+	awg3_1_2c.checked = true; 
+	awg3Inputs.forEach(id => {
+		document.querySelectorAll(`[id="${id}"]`).forEach(input => {
             input.value = '';
-        });
-    });
-   
+		});
+	});
 });
 
 // Случайно AWG 3.0
@@ -2096,9 +2067,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const masqueCheckbox = document.getElementById('masque');
     const awg3c = document.getElementById('awg3c');
     const awg3_1c = document.getElementById('awg3_1c');
-
     const xray = document.getElementById('xray');
-    const awg = document.getElementById('awg');
     const containerClash = document.querySelector('.containerClash');
     
     // Элементы Clash
