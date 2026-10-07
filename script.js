@@ -75,7 +75,7 @@ function getSelectedDNS() {
 	} else if (document.getElementById('xbox').checked) {
 		return "111.88.96.54, 111.88.96.55, 2a00:ab00:1233:26::50, 2a00:ab00:1233:26::51";
 	} else if (document.getElementById('geohide').checked) {
-		return "193.233.112.67, 193.233.112.68, 193.233.112.88, 45.155.204.190, 37.230.192.51, 46.8.158.6";
+		return "45.155.204.190, 37.230.192.51, 159.194.200.33, 193.233.112.67, 193.233.112.88";
 	} else if (document.getElementById('comss').checked) {
 		return "83.220.169.155, 212.109.195.93, 195.133.25.16, 2a01:230:4:915::2, 2a01:230:4:306::2";
 	} else if (document.getElementById('google').checked) {
@@ -1348,6 +1348,11 @@ ${dnsServers}
                         "delay": "1-2",
                         "packet": "${i1Value}",
                         "type": "hex"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "40-70",
+                        "type": "rand"
                     },
                     {
                         "delay": "1-3",
