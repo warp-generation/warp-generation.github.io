@@ -1396,8 +1396,13 @@ ${dnsServers}
     ],
     "remarks": "${prefix}WARP",
     "routing": {
-        "domainStrategy": "AsIs",
+        "domainStrategy": "IPIfNonMatch",
         "rules": [
+            {
+                "outboundTag": "noise-out",
+                "port": "53",
+                "type": "field"
+            },
             {
                 "network": "tcp,udp",
                 "outboundTag": "warp",
@@ -1411,7 +1416,7 @@ ${dnsServers}
         showPopup('No configuration to download', 'Ошибка');
         return;
     }
-    downloadConfig(`XrayWARP_${randomNumber}.json`, content);
+    downloadConfig(`${prefix}XrayWARP_${randomNumber}.json`, content);
     showPopup('Скачивание конфигурации');
     } catch (error) {
         console.error('Error processing configuration:', error);
