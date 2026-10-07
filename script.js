@@ -1351,27 +1351,42 @@ ${dnsServers}
                     },
                     {
                         "delay": "1-3",
-                        "packet": "40-70",
+                        "packet": "23-911",
                         "type": "rand"
                     },
                     {
                         "delay": "1-3",
-                        "packet": "40-70",
+                        "packet": "23-911",
                         "type": "rand"
                     },
                     {
                         "delay": "1-3",
-                        "packet": "40-70",
+                        "packet": "23-911",
                         "type": "rand"
                     },
                     {
                         "delay": "1-3",
-                        "packet": "40-70",
+                        "packet": "23-911",
                         "type": "rand"
                     },
                     {
                         "delay": "1-3",
-                        "packet": "40-70",
+                        "packet": "23-911",
+                        "type": "rand"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "23-911",
+                        "type": "rand"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "23-911",
+                        "type": "rand"
+                    },
+                    {
+                        "delay": "1-3",
+                        "packet": "23-911",
                         "type": "rand"
                     }
                 ]
